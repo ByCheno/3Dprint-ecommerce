@@ -21,6 +21,20 @@
 @section('content')
 
     <div class="container-fluid">
+
+        @if(session('success'))
+            <div class="row mt-3">
+                <div class="col-lg-12">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fa fa-info-circle"></i> {{ session('success') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        @endif
+
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
@@ -44,6 +58,7 @@
                                             <th>Id</th>
                                             <th>Usuario</th>
                                             <th>Fecha</th>
+                                            <th>Estado</th>
                                             <th>Opciones</th>
                                         </tr>
                                     </thead>
@@ -54,11 +69,23 @@
                                                 <td>{{ App\Models\User::find($pedido->user_id)->name }}</td>
                                                 <td>{{ $pedido->fecha }}</td>
                                                 <td>
-                                                    <a title="Ver producto" href="#" class="btn btn-info"><i
+                                                    @if($pedido->estado == 'pendiente')
+                                                        <span class="badge badge-danger">Pendiente</span>                                                        
+                                                    @else
+                                                    <span class="badge badge-success">Completado</span>  
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <a title="Ver producto" href="/admin/pedidos/ver/{{$pedido->id}}" class="btn btn-info"><i
                                                             class="fa fa-eye"></i></a>&nbsp;&nbsp;
                                                     <a title="Editar producto" href="#" class="btn btn-success"><i
                                                             class="fa fa-edit"></i></a>&nbsp;&nbsp;
-                                                    <a title="Eliminar producto" href="/admin/pedidos/eliminar/{{$pedido->id}}" class="btn btn-danger"><i class="fa fa-trash"></i></a>&nbsp;&nbsp;                                                    
+                                                    <a onclick="mostrarEliminar({{$pedido->id}})" title="Eliminar pedido" href="#"
+                                                        class="btn btn-danger"><i class="fa fa-trash"></i></a>&nbsp;&nbsp;
+
+                                                    @if($pedido->estado == 'pendiente')
+                                                        <a title="Marcar como completado" href="/admin/pedidos/completar/{{$pedido->id}}" class="btn btn-dark"><i class="fa fa-check"></i></a>&nbsp;&nbsp;                    
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -113,5 +140,21 @@
                 }
             }
         }).buttons().container().appendTo('#clientes_wrapper .col-md-6:eq(0)');
+
+        function mostrarEliminar(id) {
+            Swal.fire({
+                title: "Eliminar Pedido?",
+                text: "Estás seguro que deses elminar el pedido con ID: " + id,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, eliminar!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location = "/admin/pedidos/eliminar/" + id;
+                }
+            });
+        }
     </script>
 @endsection

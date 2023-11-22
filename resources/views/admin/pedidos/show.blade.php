@@ -1,17 +1,18 @@
 @extends('adminlte::page')
 
-@section('title', 'Listado de Categorías')
+@section('title', 'Detalle de Pedidos')
 
 @section('content_header')
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Listado de Categorías</h1>
+                <h1>Detalle del Pedido {{ $pedido->id }}</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-                    <li class="breadcrumb-item active">Categorías</li>
+                    <li class="breadcrumb-item"><a href="/admin/pedidos">Pedidos</a></li>
+                    <li class="breadcrumb-item active">Detalle Pedido {{ $pedido->id }}</li>
                 </ol>
             </div>
         </div>
@@ -22,60 +23,65 @@
 
     <div class="container-fluid">
 
-        @if(session('success'))
-            <div class="row mt-3">
-                <div class="col-lg-12">
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <i class="fa fa-info-circle"></i> {{ session('success') }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        @endif
-
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
                             <div class="col-lg-9">
-                                <h5><i class="fa fa-cogs"></i> Categorías BD</h5>
+                                <h5><i class="fa fa-cogs"></i> Pedidos BD: {{ $pedido->id }}</h5>
                             </div>
-                            <div class="col-lg-3">
-                                <a href="#" class="btn btn-primary float-right"><i class="fa fa-plus"></i> Añadir
-                                    Categoría</a>
+                             <div class="col-lg-3">
+                                <a href="/admin/pedidos/completar/{{$pedido->id}}" class="btn btn-success float-right"><i class="fa fa-check"></i> Completar
+                                    Pedido</a>
                             </div>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-12">
-                                <table id="categorias" class="table table-striped tablaClase">
+                                <table id="pedidos" class="table table-striped tablaClase">
                                     <thead>
                                         <tr>
                                             <th>Id</th>
-                                            <th>Nombre</th>
-                                            <th>Descripción</th>
-                                            <th>Opciones</th>
+                                            <th>ID Pedido</th>
+                                            <th>Usuario</th>
+                                            <th>Producto</th>
+                                            <th>Precio</th>
+                                            <th>Cantidad</th>
+                                            <th>SubTotal</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($categorias as $categoria)
+                                        @php
+                                            $total = 0;
+                                        @endphp
+                                        @foreach($detalles as $detalle)
+
+                                         @php
+                                            $subtotal = App\Models\Producto::find($detalle->producto_id)->price * $detalle->cantidad;
+                                            $total += $subtotal;
+                                         @endphp
+                                           
                                             <tr>
-                                                <td>{{ $categoria->id }}</td>
-                                                <td>{{ $categoria->name }}</td>
-                                                <td>{{ $categoria->description }}</td>
-                                                <td>
-                                                    <a title="Ver categoria" href="#" class="btn btn-info"><i
-                                                            class="fa fa-eye"></i></a>&nbsp;&nbsp;
-                                                    <a title="Editar categoria" href="#" class="btn btn-success"><i
-                                                            class="fa fa-edit"></i></a>&nbsp;&nbsp;
-                                                    <a onclick="mostrarEliminar({{$categoria->id}})" title="Eliminar categoria" href="#" class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                                                </td>
+                                                <td>{{ $detalle->id }}</td>
+                                                <td>{{ $pedido->id }}</td>
+                                                <td>{{ App\Models\User::find($pedido->user_id)->name }}</td>
+                                                <td>{{ App\Models\Producto::find($detalle->producto_id)->name }}</td>
+                                                <td>{{ App\Models\Producto::find($detalle->producto_id)->price }}€</td>
+                                                <td>{{ $detalle->cantidad }}</td>
+                                                <td> {{ $subtotal }}€</td> 
                                             </tr>
                                         @endforeach
+                                        <tr class="text-danger" style="font-size: 25px">
+                                            <td><b>TOTAL</b></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td><b>{{$total}}€</b></td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -101,9 +107,11 @@
     <script
         src="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-1.13.7/af-2.6.0/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/b-print-2.4.2/fc-4.3.0/fh-3.4.0/kt-2.11.0/r-2.5.0/rg-1.4.1/rr-1.4.1/sc-2.3.0/sb-1.6.0/datatables.min.js">
     </script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
-        $("#categorias").DataTable({
+        $("#pedidos").DataTable({
             "paging": true,
             "lengthChange": true,
             "searching": true,
@@ -125,11 +133,11 @@
                 }
             }
         }).buttons().container().appendTo('#clientes_wrapper .col-md-6:eq(0)');
-    
+
         function mostrarEliminar(id) {
             Swal.fire({
-                title: "Eliminar categoria?",
-                text: "Estás seguro que deseas elminar la categoria con ID: " + id + " Ten en cuenta que pueden existir productos asociados",
+                title: "Eliminar Pedido?",
+                text: "Estás seguro que deses elminar el pedido con ID: " + id,
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
@@ -137,10 +145,9 @@
                 confirmButtonText: "Sí, eliminar!"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location = "/admin/categorias/eliminar/" + id;
+                    window.location = "/admin/pedidos/eliminar/" + id;
                 }
             });
         }
-
     </script>
 @endsection
