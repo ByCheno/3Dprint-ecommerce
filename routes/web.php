@@ -19,6 +19,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
 
     Route::get('/admin/categorias', [CategoriaController::class, 'index'])->name('admin.categorias.index');
     Route::get('/admin/categorias/eliminar/{id}', [CategoriaController::class, 'destroy'])->name('admin.categorias.destroy');
+    Route::get('/admin/categorias/ver/{id}', [CategoriaController::class, 'show'])->name('admin.categorias.show');
 
     Route::get('/admin/productos', [ProductoController::class, 'index'])->name('admin.productos.index');
     Route::get('/admin/productos/eliminar/{id}', [ProductoController::class, 'destroy'])->name('admin.productos.destroy');

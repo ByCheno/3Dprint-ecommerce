@@ -31,7 +31,7 @@
                             <div class="col-lg-9">
                                 <h5><i class="fa fa-cogs"></i> Pedidos BD: {{ $pedido->id }}</h5>
                             </div>
-                             <div class="col-lg-3">
+                            <div class="col-lg-3">
                                 <a href="/admin/pedidos/completar/{{$pedido->id}}" class="btn btn-success float-right"><i class="fa fa-check"></i> Completar
                                     Pedido</a>
                             </div>

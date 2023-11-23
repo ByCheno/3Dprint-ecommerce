@@ -68,7 +68,7 @@
                                                 <td>{{ $categoria->name }}</td>
                                                 <td>{{ $categoria->description }}</td>
                                                 <td>
-                                                    <a title="Ver categoria" href="#" class="btn btn-info"><i
+                                                    <a title="Ver categoria" href="/admin/categorias/ver/{{$categoria->id}}" class="btn btn-info"><i
                                                             class="fa fa-eye"></i></a>&nbsp;&nbsp;
                                                     <a title="Editar categoria" href="#" class="btn btn-success"><i
                                                             class="fa fa-edit"></i></a>&nbsp;&nbsp;
