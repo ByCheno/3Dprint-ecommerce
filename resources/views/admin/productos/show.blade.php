@@ -1,17 +1,18 @@
 @extends('adminlte::page')
 
-@section('title', 'Listado de Productos')
+@section('title', 'Detalle de Productos')
 
 @section('content_header')
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Listado de Productos</h1>
+                <h1>Detalle del Producto {{ $producto->id }}</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-                    <li class="breadcrumb-item active">Productos</li>
+                    <li class="breadcrumb-item"><a href="/admin/categorias">Productos</a></li>
+                    <li class="breadcrumb-item active">Detalle Producto {{ $producto->id }}</li>
                 </ol>
             </div>
         </div>
@@ -22,30 +23,13 @@
 
     <div class="container-fluid">
 
-        @if(session('success'))
-            <div class="row mt-3">
-                <div class="col-lg-12">
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <i class="fa fa-info-circle"></i> {{ session('success') }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        @endif
-
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
                             <div class="col-lg-9">
-                                <h5><i class="fa fa-cogs"></i> Productos BD</h5>
-                            </div>
-                            <div class="col-lg-3">
-                                <a href="#" class="btn btn-primary float-right"><i class="fa fa-plus"></i> Añadir
-                                    Producto</a>
+                                <h5><i class="fa fa-cogs"></i> Productos BD: {{ $producto->id }}</h5>
                             </div>
                         </div>
                     </div>
@@ -56,31 +40,18 @@
                                     <thead>
                                         <tr>
                                             <th>Id</th>
-                                            <th>Categoría</th>
                                             <th>Nombre</th>
                                             <th>Precio</th>
-                                            <th>Stock Actual</th>
-                                            <th>Opciones</th>
+                                            <th>Categoria</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($productos as $producto)
+                                        @foreach($detalles as $detalle)
                                             <tr>
-                                                <td>{{ $producto->id }}</td>
-                                                <td>{{ App\Models\Categoria::find($producto->categoria_id)->name }}</td>
-                                                <td>{{ $producto->name }}</td>
-                                                <td>{{ $producto->price }}€</td>      
-                                                <td><span class="badge badge-primary">Stock ({{App\Models\Producto::stockActual($producto->id)}})</span></td>                                          
-                                                <td>
-                                                    <a title="Ver producto" href="/admin/productos/ver/{{$producto->id}}" class="btn btn-info"><i
-                                                            class="fa fa-eye"></i></a>&nbsp;&nbsp;
-                                                    <a title="Editar producto" href="#" class="btn btn-success"><i
-                                                            class="fa fa-edit"></i></a>&nbsp;&nbsp;
-                                                    <a onclick="mostrarEliminar({{$producto->id}})" title="Eliminar producto" href="#"
-                                                        class="btn btn-danger"><i class="fa fa-trash"></i></a>&nbsp;&nbsp;
-
-                                                    <a title="Imágenes producto" href="#" class="btn btn-dark"><i class="fa fa-image"></i></a>&nbsp;&nbsp;                                                    
-                                                </td>
+                                                <td>{{ $detalle->id }}</td>
+                                                <td>{{ $detalle->name }}</td>
+                                                <td>{{ $detalle->price }}€</td>
+                                                <td>{{ App\Models\Categoria::find($detalle->categoria_id)->name }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -108,7 +79,9 @@
     <script
         src="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-1.13.7/af-2.6.0/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/b-print-2.4.2/fc-4.3.0/fh-3.4.0/kt-2.11.0/r-2.5.0/rg-1.4.1/rr-1.4.1/sc-2.3.0/sb-1.6.0/datatables.min.js">
     </script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         $("#productos").DataTable({
             "paging": true,
@@ -135,8 +108,8 @@
 
         function mostrarEliminar(id) {
             Swal.fire({
-                title: "Eliminar Producto?",
-                text: "Estás seguro que deseas elminar el producto con ID: " + id + " Ten en cuenta que pueden existir pedidos asociados",
+                title: "Eliminar Pedido?",
+                text: "Estás seguro que deses elminar el pedido con ID: " + id,
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
@@ -144,7 +117,7 @@
                 confirmButtonText: "Sí, eliminar!"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location = "/admin/productos/eliminar/" + id;
+                    window.location = "/admin/pedidos/eliminar/" + id;
                 }
             });
         }
