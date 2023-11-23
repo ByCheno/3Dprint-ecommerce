@@ -39,7 +39,7 @@
                                 <table id="productos" class="table table-striped tablaClase">
                                     <thead>
                                         <tr>
-                                            <th>Id</th>
+                                            <th>Id</th> 
                                             <th>Nombre</th>
                                             <th>Precio</th>
                                             <th>Categoria</th>
