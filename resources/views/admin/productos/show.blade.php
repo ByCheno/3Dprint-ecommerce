@@ -6,13 +6,13 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Detalle del Producto {{ $producto->id }}</h1>
+                <h1>Detalle del Producto {{ $producto->name }}</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-                    <li class="breadcrumb-item"><a href="/admin/categorias">Productos</a></li>
-                    <li class="breadcrumb-item active">Detalle Producto {{ $producto->id }}</li>
+                    <li class="breadcrumb-item"><a href="/admin/productos">Productos</a></li>
+                    <li class="breadcrumb-item active">Detalle Producto: {{ $producto->id }}</li>
                 </ol>
             </div>
         </div>
@@ -51,7 +51,7 @@
                                                 <td>{{ $detalle->id }}</td>
                                                 <td>{{ $detalle->name }}</td>
                                                 <td>{{ $detalle->price }}€</td>
-                                                <td>{{ App\Models\Categoria::find($detalle->categoria_id)->name }}</td>
+                                                <td><a href="/admin/categorias/ver/{{$detalle->categoria_id}}"> {{ App\Models\Categoria::find($detalle->categoria_id)->name }}<a></td>
                                             </tr>
                                         @endforeach
                                     </tbody>

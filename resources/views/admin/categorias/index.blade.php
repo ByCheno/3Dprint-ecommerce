@@ -22,7 +22,7 @@
 
     <div class="container-fluid">
 
-        @if(session('success'))
+        @if (session('success'))
             <div class="row mt-3">
                 <div class="col-lg-12">
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -44,8 +44,10 @@
                                 <h5><i class="fa fa-cogs"></i> Categorías BD</h5>
                             </div>
                             <div class="col-lg-3">
-                                <a href="#" class="btn btn-primary float-right"><i class="fa fa-plus"></i> Añadir
-                                    Categoría</a>
+                                <button type="button" class="btn btn-primary float-right" data-toggle="modal"
+                                    data-target="#modalCategoria">
+                                    Añadir Categoría
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -68,11 +70,14 @@
                                                 <td>{{ $categoria->name }}</td>
                                                 <td>{{ $categoria->description }}</td>
                                                 <td>
-                                                    <a title="Ver categoria" href="/admin/categorias/ver/{{$categoria->id}}" class="btn btn-info"><i
-                                                            class="fa fa-eye"></i></a>&nbsp;&nbsp;
-                                                    <a title="Editar categoria" href="#" class="btn btn-success"><i
+                                                    <a title="Ver categoria"
+                                                        href="/admin/categorias/ver/{{ $categoria->id }}"
+                                                        class="btn btn-info"><i class="fa fa-eye"></i></a>&nbsp;&nbsp;
+                                                    <a title="Editar categoria" href="/admin/categorias/editar/{{ $categoria->id }}" class="btn btn-success"><i
                                                             class="fa fa-edit"></i></a>&nbsp;&nbsp;
-                                                    <a onclick="mostrarEliminar({{$categoria->id}})" title="Eliminar categoria" href="#" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                                    <a onclick="mostrarEliminar({{ $categoria->id }})"
+                                                        title="Eliminar categoria" href="#" class="btn btn-danger"><i
+                                                            class="fa fa-trash"></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -82,6 +87,40 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalCategoria" data-backdrop="static" data-keyboard="false" tabindex="-1"
+        aria-labelledby="modalCategoriaLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalCategoriaLabel">Añadir Categoría</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/admin/categorias/crear" method="post">
+                    @csrf
+                    <div class="modal-body">
+
+                        <div class="col-md-12 mb-3">
+                            <label for="validacionCategoria">Nombre: </label>
+                            <input type="text" name="name" class="form-control" id="validacionCategoria" required>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <label for="validacionDescripcion">Descripción: </label>
+                            <input type="text" name="description" class="form-control" id="validacionDescripcion" required>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -125,11 +164,12 @@
                 }
             }
         }).buttons().container().appendTo('#clientes_wrapper .col-md-6:eq(0)');
-    
+
         function mostrarEliminar(id) {
             Swal.fire({
                 title: "Eliminar categoria?",
-                text: "Estás seguro que deseas elminar la categoria con ID: " + id + " Ten en cuenta que pueden existir productos asociados",
+                text: "Estás seguro que deseas elminar la categoria con ID: " + id +
+                    " Ten en cuenta que pueden existir productos asociados",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
@@ -141,6 +181,5 @@
                 }
             });
         }
-
     </script>
 @endsection

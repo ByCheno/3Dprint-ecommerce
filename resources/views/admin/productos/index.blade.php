@@ -44,8 +44,10 @@
                                 <h5><i class="fa fa-cogs"></i> Productos BD</h5>
                             </div>
                             <div class="col-lg-3">
-                                <a href="#" class="btn btn-primary float-right"><i class="fa fa-plus"></i> Añadir
-                                    Producto</a>
+                                <button type="button" class="btn btn-primary float-right" data-toggle="modal"
+                                    data-target="#modalProducto">
+                                    Añadir Producto
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -79,7 +81,7 @@
                                                     <a onclick="mostrarEliminar({{$producto->id}})" title="Eliminar producto" href="#"
                                                         class="btn btn-danger"><i class="fa fa-trash"></i></a>&nbsp;&nbsp;
 
-                                                    <a title="Imágenes producto" href="#" class="btn btn-dark"><i class="fa fa-image"></i></a>&nbsp;&nbsp;                                                    
+                                                    <a title="Imágenes producto" href="/admin/productos/imagenes/{{$producto->id}}" class="btn btn-dark"><i class="fa fa-image"></i></a>&nbsp;&nbsp;                                                    
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -89,6 +91,55 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalProducto" data-backdrop="static" data-keyboard="false" tabindex="-1"
+        aria-labelledby="modalProductoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalProductoLabel">Añadir Categoría</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/admin/productos/crear" method="post">
+                    @csrf
+                    <div class="modal-body">
+                        
+                        <div class="col-md-12 mb-3">
+                            <label for="validacionCategoria">Categoría: </label>
+                            <select name="categoria_id" class="form-control" id="validacionCategoria" required>
+                                <option value="">Selecciona una categoría</option>
+                                @foreach ($categorias as $categoria)
+                                    <option value="{{ $categoria->id }}">{{ $categoria->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <label for="validacionCategoria">Nombre: </label>
+                            <input type="text" name="name" class="form-control" id="validacionCategoria" value="" required>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <label for="validacionDescripcion">Descripción: </label>
+                            <input type="text" name="description" class="form-control" id="validacionDescripcion" value="" required>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <label for="validacionPrecio">Precio: </label>
+                            <input type="text" name="price" class="form-control" id="validacionPrecio" value="" required>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

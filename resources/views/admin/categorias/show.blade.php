@@ -6,7 +6,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Detalle de la categoria {{ $categoria->id }}</h1>
+                <h1>Detalle de la categoria {{ $categoria->name }}</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -29,7 +29,7 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-lg-9">
-                                <h5><i class="fa fa-cogs"></i> Categorias BD: {{ $categoria->id }}</h5>
+                                <h5><i class="fa fa-cogs"></i> Categorias BD: {{ $categoria->name }}</h5>
                             </div>
                         </div>
                     </div>
@@ -40,18 +40,18 @@
                                     <thead>
                                         <tr>
                                             <th>Id</th>
-                                            <th>Nombre</th>
-                                            <th>Id Producto</th>
-                                            <th>Nombre Producto</th>
+                                            <th>Nombre producto</th>
+                                            <th>Precio Producto</th>
+                                            <th>Categoría</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($detalles as $detalle)
+                                        @foreach($productos as $producto)
                                             <tr>
-                                                <td>{{ $detalle->id }}</td>
-                                                <td>{{ $categoria->name }}</td>
-                                                <td>{{ App\Models\Producto::find($detalle->id)->id }}</td>
-                                                <td>{{ App\Models\Producto::find($detalle->id)->name }}</td>
+                                                <td>{{ $producto->id }}</td>
+                                                <td>{{ $producto->name }}</td>
+                                                <td>{{ $producto->price }}€</td>
+                                                <td><span class="badge badge-info">{{$categoria->name}}</span></td>
                                             </tr>
                                         @endforeach
                                     </tbody>

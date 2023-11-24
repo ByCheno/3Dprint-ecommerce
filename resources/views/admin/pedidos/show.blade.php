@@ -32,8 +32,10 @@
                                 <h5><i class="fa fa-cogs"></i> Pedidos BD: {{ $pedido->id }}</h5>
                             </div>
                             <div class="col-lg-3">
+                                @if($pedido->estado == 'pendiente')
                                 <a href="/admin/pedidos/completar/{{$pedido->id}}" class="btn btn-success float-right"><i class="fa fa-check"></i> Completar
                                     Pedido</a>
+                                @endif
                             </div>
                         </div>
                     </div>

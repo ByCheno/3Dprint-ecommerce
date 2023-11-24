@@ -36,5 +36,8 @@ class Producto extends Model
         return $total;
     }
 
+    public function images(){
+        return $this->hasMany(ImagenProducto::class); // genera una lista de usuarios dado un rol
+    }
 
 }
