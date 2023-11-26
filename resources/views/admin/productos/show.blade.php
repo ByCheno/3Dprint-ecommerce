@@ -23,7 +23,7 @@
 
     <div class="container-fluid">
 
-        <div class="row">
+        <div class="row mb-3">
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
@@ -43,6 +43,7 @@
                                             <th>Nombre</th>
                                             <th>Precio</th>
                                             <th>Categoria</th>
+                                            <th>Descripción</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -52,6 +53,49 @@
                                                 <td>{{ $detalle->name }}</td>
                                                 <td>{{ $detalle->price }}€</td>
                                                 <td><a href="/admin/categorias/ver/{{$detalle->categoria_id}}"> {{ App\Models\Categoria::find($detalle->categoria_id)->name }}<a></td>
+                                                    <td>{{ $detalle->description }}€</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-lg-9">
+                                <h5><i class="fa fa-cogs"></i> Stock Actual: <b>({{App\Models\Producto::stockActual($producto->id)}})</b></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <table id="stocks" class="table table-striped tablaClase">
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Producto</th>
+                                            <th>Cantidad</th>
+                                            <th>Tipo</th>
+                                            <th>Fecha</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($stocks as $stocks)
+                                            <tr>
+                                                <td>{{ $stocks->id }}</td>
+                                                <td>{{ $producto->name }}</td>
+                                                <td>{{ $stocks->cantidad }}</td>
+                                                <td>{{ ucfirst($stocks->tipo) }}</td>
+                                                <td>{{ date("d-m-Y H:i:s",strtotime($stocks->fecha))}}</td>    
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -84,6 +128,29 @@
 
     <script>
         $("#productos").DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            /*dom: 'Bfrtip',*/
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+            "language": {
+                "search": "Buscar",
+                "lengthMenu": "Mostrar _MENU_ registros por páginas",
+                "info": "Mostrando páginas _PAGE_ de _PAGES_ de _TOTAL_ registros",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente",
+                    "first": "Primero",
+                    "last": "Último"
+                }
+            }
+        }).buttons().container().appendTo('#clientes_wrapper .col-md-6:eq(0)');
+
+        $("#stocks").DataTable({
             "paging": true,
             "lengthChange": true,
             "searching": true,

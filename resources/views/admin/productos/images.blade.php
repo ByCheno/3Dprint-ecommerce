@@ -36,6 +36,19 @@
             </div>
         @endif
 
+        @if (session('error'))
+            <div class="row mt-3">
+                <div class="col-lg-12">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fa fa-info-circle"></i> {{ session('error') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        @endif
+
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
@@ -56,27 +69,31 @@
                         <div class="row">
                             @foreach ($images as $image)
                                 <div class="col-lg-2">
-                                    @if($image->tipo == 'galeria')
+                                    @if ($image->tipo == 'galeria')
                                         <div class="card">
-                                    @else
-                                        <div class="card" style="border: 1px solid red !important;">
+                                        @else
+                                            <div class="card" style="border: 1px solid red !important;">
                                     @endif
-                                        <img src="{{ asset('images/productos/' . $image->url) }}" class="card-img-top">
-                                        <div class="card-body">    
-                                             <p class="card-text"></p>                                     
-                                            <a href="#" class="btn btn-danger float-right"><i class="fa fa-trash"></i></a>
-                                            @if($image->tipo == 'galeria')
-                                                <a href="#" class="btn btn-success float-right mr-2"><i class="fa fa-image"></i></a>
-                                            @endif
-                                        </div>
+                                    <img src="{{ asset('images/productos/' . $image->url) }}" class="card-img-top">
+                                    <div class="card-body">
+                                        <p class="card-text"></p>
+
+                                        <a href="#" onclick="mostrarEliminar({{ $image->id }})"
+                                            class="btn btn-danger float-right"><i class="fa fa-trash"></i></a>
+
+                                        @if ($image->tipo == 'galeria')
+                                            <a href="/admin/productos/fotoportada/{{ $image->id }}"
+                                                class="btn btn-success float-right mr-2"><i class="fa fa-image"></i></a>
+                                        @endif
                                     </div>
                                 </div>
-                            @endforeach
                         </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <div class="modal fade" id="modalImagenes" data-backdrop="static" data-keyboard="false" tabindex="-1"
@@ -97,7 +114,9 @@
                         <div class="col-md-12 mb-3">
                             <label for="validacionTipo">Tipo Imagen: </label>
                             <select name="tipo" class="form-control" id="validacionTipo" required>
-                                <option value="portada">Portada</option>
+                                @if ($images->where('tipo', 'portada')->count() == 0)
+                                    <option value="portada">Portada</option>
+                                @endif
                                 <option value="galeria">Galería</option>
                             </select>
                         </div>
@@ -121,5 +140,21 @@
 
 @section('js')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script></script>
+    <script>
+        function mostrarEliminar(id) {
+            Swal.fire({
+                title: "Eliminar imagen?",
+                text: "Estás seguro que deseas eliminar la imiagen con ID: " + id + " ?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, eliminar!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location = "/admin/productos/imagenes/eliminar/" + id;
+                }
+            });
+        }
+    </script>
 @endsection

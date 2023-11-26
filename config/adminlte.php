@@ -267,6 +267,11 @@ return [
             'can'  => 'manage-blog',
         ],
         [
+            'text' => 'Inicio',
+            'url'  => 'admin',
+            'icon' => 'fas fa-fw fa-home',
+        ],
+        [
             'text' => 'Categorías',
             'url'  => 'admin/categorias',
             'icon' => 'fas fa-fw fa-cogs',

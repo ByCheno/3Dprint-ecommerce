@@ -1,17 +1,18 @@
 @extends('adminlte::page')
 
-@section('title', 'Listado de Productos')
+@section('title', 'Listado de Stock')
 
 @section('content_header')
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Listado de Productos</h1>
+                <h1>Listado de Stock: {{ $producto->name }}</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-                    <li class="breadcrumb-item active">Productos</li>
+                    <li class="breadcrumb-item active"><a href="/admin/productos">Productos</a></li>
+                    <li class="breadcrumb-item active">Stock Producto: {{$producto->name}}</li>
                 </ol>
             </div>
         </div>
@@ -35,18 +36,31 @@
             </div>
         @endif
 
+        @if(session('error'))
+            <div class="row mt-3">
+                <div class="col-lg-12">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fa fa-info-circle"></i> {{ session('error') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        @endif
+
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
                             <div class="col-lg-9">
-                                <h5><i class="fa fa-cogs"></i> Productos BD</h5>
+                                <h5><i class="fa fa-cogs"></i> Stock Actual: <b>({{App\Models\Producto::stockActual($producto->id)}})</b></h5>
                             </div>
                             <div class="col-lg-3">
                                 <button type="button" class="btn btn-primary float-right" data-toggle="modal"
-                                    data-target="#modalProducto">
-                                    Añadir Producto
+                                    data-target="#modalStock">
+                                    Añadir Stock
                                 </button>
                             </div>
                         </div>
@@ -54,36 +68,28 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-12">
-                                <table id="productos" class="table table-striped tablaClase">
+                                <table id="stocks" class="table table-striped tablaClase">
                                     <thead>
                                         <tr>
                                             <th>Id</th>
-                                            <th>Categoría</th>
-                                            <th>Nombre</th>
-                                            <th>Precio</th>
-                                            <th>Stock Actual</th>
+                                            <th>Producto</th>
+                                            <th>Cantidad</th>
+                                            <th>Tipo</th>
+                                            <th>Fecha</th>
                                             <th>Opciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($productos as $producto)
+                                        @foreach ($stocks as $stocks)
                                             <tr>
-                                                <td>{{ $producto->id }}</td>
-                                                <td>{{ App\Models\Categoria::find($producto->categoria_id)->name }}</td>
+                                                <td>{{ $stocks->id }}</td>
                                                 <td>{{ $producto->name }}</td>
-                                                <td>{{ $producto->price }}€</td>      
+                                                <td>{{ $stocks->cantidad }}</td>
+                                                <td>{{ ucfirst($stocks->tipo) }}</td>
+                                                <td>{{ date("d-m-Y H:i:s",strtotime($stocks->fecha))}}</td>        
                                                 <td>
-                                                    <a style="width: 100px" href="/admin/productos/stock/{{$producto->id}}" class="btn btn-primary">Stock ({{App\Models\Producto::stockActual($producto->id)}})</a>
-                                                   </td>                                          
-                                                <td>
-                                                    <a title="Ver producto" href="/admin/productos/ver/{{$producto->id}}" class="btn btn-info"><i
-                                                            class="fa fa-eye"></i></a>&nbsp;&nbsp;
-                                                    <a title="Editar producto" href="/admin/productos/editar/{{ $producto->id }}" class="btn btn-success"><i
-                                                            class="fa fa-edit"></i></a>&nbsp;&nbsp;
-                                                    <a onclick="mostrarEliminar({{$producto->id}})" title="Eliminar producto" href="#"
+                                                    <a onclick="mostrarEliminar({{$stocks->id}})" title="Eliminar stock" href="#"
                                                         class="btn btn-danger"><i class="fa fa-trash"></i></a>&nbsp;&nbsp;
-
-                                                    <a title="Imágenes producto" href="/admin/productos/imagenes/{{$producto->id}}" class="btn btn-dark"><i class="fa fa-image"></i></a>&nbsp;&nbsp;                                                    
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -97,72 +103,36 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalProducto" data-backdrop="static" data-keyboard="false" tabindex="-1"
-        aria-labelledby="modalProductoLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalProductoLabel">Añadir Producto</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="/admin/productos/crear" method="post">
-                    @csrf
-                    <div class="modal-body">
-                        
-                        <div class="col-md-12 mb-3">
-                            <label for="validacionCategoria">Categoría: </label>
-                            <select name="categoria_id" class="form-control" id="validacionCategoria" required>
-                                <option value="">Selecciona una categoría</option>
-                                @foreach ($categorias as $categoria)
-                                    <option value="{{ $categoria->id }}">{{ $categoria->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="col-md-12 mb-3">
-                            <label for="validacionCategoria">Nombre: </label>
-                            <input type="text" name="name" class="form-control" id="validacionCategoria" value="" required>
-                        </div>
-
-                        <div class="col-md-12 mb-3">
-                            <label for="validacionDescripcion">Descripción: </label>
-                            <input type="text" name="description" class="form-control" id="validacionDescripcion" value="" required>
-                        </div>
-
-                        <div class="col-md-12 mb-3">
-                            <label for="validacionPrecio">Precio: </label>
-                            <input type="text" name="price" class="form-control" id="validacionPrecio" value="" required>
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary">Guardar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <div class="modal fade" id="modalStock" data-backdrop="static" data-keyboard="false" tabindex="-1"
         aria-labelledby="modalStockLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalStockLabel">Modificar Stock</h5>
+                    <h5 class="modal-title" id="modalStockLabel">Añadir Stock</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="/admin/productos/stock{{$producto->cantidad}}" method="post">
+                <form action="/admin/productos/stock/update/{{$producto->id}}" method="post">
                     @csrf
                     <div class="modal-body">
+                        
+                        <div class="col-md-12 mb-3">
+                            <label for="validacionCantidad">Cantidad: </label>
+                            <input type="number" name="cantidad" class="form-control" id="validacionCantidad" value="" required>
+                        </div>
 
                         <div class="col-md-12 mb-3">
-                            <label for="validacionStock">Cantidad: </label>
-                            <input type="text" name="cantidad" class="form-control" id="validacionStock" value="{{ App\Models\Producto::stockActual($producto->id) }}" required>
+                            <label for="validacionTipo">Tipo: </label>
+                            <select class="form-control" name="tipo">
+                                    <option value="inicio">Inicio</option>
+                                    <option value="compra">Compra</option>
+                            </select>                            
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <label for="validacionFecha">Fecha: </label>
+                            <input type="date" name="fecha" class="form-control" id="validacionFecha" value="" required>
                         </div>
 
                     </div>
@@ -174,6 +144,8 @@
             </div>
         </div>
     </div>
+
+    
 @stop
 
 @section('css')
@@ -192,7 +164,7 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        $("#productos").DataTable({
+        $("#stocks").DataTable({
             "paging": true,
             "lengthChange": true,
             "searching": true,
@@ -217,8 +189,8 @@
 
         function mostrarEliminar(id) {
             Swal.fire({
-                title: "Eliminar Producto?",
-                text: "Estás seguro que deseas elminar el producto con ID: " + id + " Ten en cuenta que pueden existir pedidos asociados",
+                title: "Eliminar Stock?",
+                text: "Estás seguro que deseas elminar el stock con ID: " + id + "?",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
@@ -226,7 +198,7 @@
                 confirmButtonText: "Sí, eliminar!"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location = "/admin/productos/eliminar/" + id;
+                    window.location = "/admin/productos/stock/eliminar/" + id;
                 }
             });
         }

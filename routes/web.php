@@ -30,13 +30,25 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::post('/admin/productos/crear', [ProductoController::class, 'crear'])->name('admin.productos.create');
     Route::get('/admin/productos/imagenes/{id}', [ProductoController::class, 'images'])->name('admin.productos.images');
     Route::post('/admin/productos/imagenes/crear/{id}', [ProductoController::class, 'subirImagenes'])->name('admin.productos.subirImagenes');
-    
+    Route::get('/admin/productos/editar/{id}', [ProductoController::class, 'editar'])->name('admin.productos.edit');
+    Route::post('/admin/productos/update/{id}', [ProductoController::class, 'update'])->name('admin.productos.update');
+    Route::get('/admin/productos/stock/{id}', [ProductoController::class, 'verStock'])->name('admin.productos.stock');
+    Route::post('/admin/productos/stock/update/{id}', [ProductoController::class, 'updateStock'])->name('admin.productos.crearStock');
+    Route::get('/admin/productos/stock/eliminar/{id}', [ProductoController::class, 'eliminarStock'])->name('admin.productos.deleteStock');
+    Route::get('/admin/productos/fotoportada/{id}', [ProductoController::class, 'actualizarFotoPortada'])->name('admin.productos.renamePhotoHome');
+    Route::get('/admin/productos/imagenes/eliminar/{id}', [ProductoController::class, 'eliminarImagen'])->name('admin.productos.deleteImages');
+
+
+
     Route::get('/admin/usuarios', [UserController::class, 'index'])->name('admin.users.index');
     
     Route::get('/admin/pedidos', [PedidoController::class, 'index'])->name('admin.pedidos.index');
     Route::get('/admin/pedidos/eliminar/{id}', [PedidoController::class, 'destroy'])->name('admin.pedidos.destroy');
     Route::get('/admin/pedidos/ver/{id}', [PedidoController::class, 'show'])->name('admin.pedidos.show');
     Route::get('/admin/pedidos/completar/{id}', [PedidoController::class, 'completar'])->name('admin.pedidos.completar');
+    Route::post('/admin/pedidos/crear', [PedidoController::class, 'crear'])->name('admin.pedidos.create');
+    Route::post('/admin/pedidos/asignar/{id}', [PedidoController::class, 'asignarDetallePedido'])->name('admin.pedidos.asignarDetallePedido');
+
 
 });
 

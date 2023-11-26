@@ -91,6 +91,7 @@
         </div>
     </div>
 
+    {{-- MODAL PARA AGREGAR CATEGORIAS --}}
     <div class="modal fade" id="modalCategoria" data-backdrop="static" data-keyboard="false" tabindex="-1"
         aria-labelledby="modalCategoriaLabel" aria-hidden="true">
         <div class="modal-dialog">

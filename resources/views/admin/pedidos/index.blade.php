@@ -40,8 +40,14 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-9">
                                 <h5><i class="fa fa-cogs"></i> Pedidos BD</h5>
+                            </div>
+                            <div class="col-lg-3">
+                                <button type="button" class="btn btn-primary float-right" data-toggle="modal"
+                                    data-target="#modalPedido">
+                                    Añadir Pedido
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -72,9 +78,9 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <a title="Ver producto" href="/admin/pedidos/ver/{{$pedido->id}}" class="btn btn-info"><i
+                                                    <a title="Ver pedido" href="/admin/pedidos/ver/{{$pedido->id}}" class="btn btn-info"><i
                                                             class="fa fa-eye"></i></a>&nbsp;&nbsp;
-                                                    <a title="Editar producto" href="#" class="btn btn-success"><i
+                                                    <a title="Editar pedido" href="#" class="btn btn-success"><i
                                                             class="fa fa-edit"></i></a>&nbsp;&nbsp;
                                                     <a onclick="mostrarEliminar({{$pedido->id}})" title="Eliminar pedido" href="#"
                                                         class="btn btn-danger"><i class="fa fa-trash"></i></a>&nbsp;&nbsp;
@@ -94,6 +100,48 @@
             </div>
         </div>
     </div>
+
+
+    <div class="modal fade" id="modalPedido" data-backdrop="static" data-keyboard="false" tabindex="-1"
+        aria-labelledby="modalPedidoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalPedidoLabel">Añadir Pedido</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/admin/pedidos/crear" method="post">
+                    @csrf
+                    <div class="modal-body">
+
+                        <div class="col-md-12 mb-3">
+                            <label for="validacionUsuario">Usuario: </label>
+                            <select name="user_id" class="form-control" id="validacionUsuario" required>
+                                <option value="">Selecciona un usuario</option>
+                                @foreach ($usuarios as $usuario)
+                                    <option value="{{ $usuario->id }}">{{ $usuario->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <label for="validacioFecha">Fecha: </label>
+                            <input type="date" name="fecha" class="form-control" id="validacioFecha" required>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 @stop
 
 @section('css')

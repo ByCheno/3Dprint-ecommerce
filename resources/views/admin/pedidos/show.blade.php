@@ -32,9 +32,13 @@
                                 <h5><i class="fa fa-cogs"></i> Pedidos BD: {{ $pedido->id }}</h5>
                             </div>
                             <div class="col-lg-3">
-                                @if($pedido->estado == 'pendiente')
-                                <a href="/admin/pedidos/completar/{{$pedido->id}}" class="btn btn-success float-right"><i class="fa fa-check"></i> Completar
+                                @if($pedido->estado == 'pendiente' && $detalles->count() > 0)
+                                <a href="/admin/pedidos/completar/{{$pedido->id}}" class="btn btn-success float-right ml-1"><i class="fa fa-check"></i> Completar
                                     Pedido</a>
+                                @endif
+                                @if($pedido->estado == 'pendiente')
+                                <a data-toggle="modal"
+                                data-target="#modalDetallePedido" href="#" class="btn btn-primary float-right"><i class="fa fa-plus"></i> Añadir Producto Pedido</a>
                                 @endif
                             </div>
                         </div>
@@ -93,6 +97,49 @@
             </div>
         </div>
     </div>
+
+
+    <!-- MODAL ASIGNAR PEDIDO (DETALLE)-->
+    <div class="modal fade" id="modalDetallePedido" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    aria-labelledby="modalDetallePedidoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalDetallePedidoLabel">Añadir Producto</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/admin/pedidos/asignar/{{$pedido->id}}" method="post">
+                @csrf
+                <div class="modal-body">
+
+                    <div class="col-md-12 mb-3">
+                        <label for="validacionproducto">Producto: </label>
+                        <select name="producto_id" class="form-control" id="validacionproducto" required>
+                            <option value="">Selecciona un producto</option>
+                            @foreach ($productos as $producto)
+                                <option value="{{ $producto->id }}">{{ $producto->name }} ({{App\Models\Producto::stockActual($producto->id)}})</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-12 mb-3">
+                        <label for="validaciocantidad">Cantidad: </label>
+                        <input type="number" name="cantidad" class="form-control" id="validaciocantidad" required>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 @stop
 
 @section('css')
