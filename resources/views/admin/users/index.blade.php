@@ -21,6 +21,20 @@
 @section('content')
 
     <div class="container-fluid">
+
+        @if (session('success'))
+            <div class="row mt-3">
+                <div class="col-lg-12">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fa fa-info-circle"></i> {{ session('success') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        @endif
+        
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
@@ -64,7 +78,7 @@
                                                 <td>
                                                     <a title="Ver user" href="/admin/usuarios/ver/{{ $user->id }}" class="btn btn-info"><i
                                                             class="fa fa-eye"></i></a>&nbsp;&nbsp;
-                                                    <a title="Editar user" href="#" class="btn btn-success"><i
+                                                    <a title="Editar user" href="/admin/usuarios/editar/{{ $user->id }}" class="btn btn-success"><i
                                                             class="fa fa-edit"></i></a>&nbsp;&nbsp;
                                                     <a onclick="mostrarEliminar({{ $user->id }})"
                                                         title="Eliminar user" href="#" class="btn btn-danger"><i class="fa fa-trash"></i></a>&nbsp;&nbsp;                                                    
