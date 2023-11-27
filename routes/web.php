@@ -41,7 +41,13 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
 
 
     Route::get('/admin/usuarios', [UserController::class, 'index'])->name('admin.users.index');
-    
+    Route::get('/admin/usuarios/eliminar/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+    Route::get('/admin/usuarios/ver/{id}', [UserController::class, 'show'])->name('admin.usuarios.show');
+    Route::post('/admin/usuarios/crear', [UserController::class, 'crear'])->name('admin.users.create');
+    Route::get('/admin/usuarios/editar/{id}', [UserController::class, 'editar'])->name('admin.users.edit');
+    Route::post('/admin/usuarios/update/{id}', [UserController::class, 'update'])->name('admin.users.update');
+
+
     Route::get('/admin/pedidos', [PedidoController::class, 'index'])->name('admin.pedidos.index');
     Route::get('/admin/pedidos/eliminar/{id}', [PedidoController::class, 'destroy'])->name('admin.pedidos.destroy');
     Route::get('/admin/pedidos/ver/{id}', [PedidoController::class, 'show'])->name('admin.pedidos.show');
