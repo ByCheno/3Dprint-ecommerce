@@ -44,6 +44,7 @@
                                             <th>Email</th>
                                             <th>Contraseña</th>
                                             <th>Rol</th>
+                                            <th>Numero de pedidos</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -57,6 +58,7 @@
                                                 @else
                                                 <td><span class="badge badge-info">{{$user->user_type}}</span></td>
                                                 @endif
+                                                <td>{{ $pedidosCount }}</td> 
                                             </tr>
                                     </tbody>
                                 </table>
