@@ -11,7 +11,7 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-                    <li class="breadcrumb-item"><a href="/admin/categorias">Usuarios</a></li>
+                    <li class="breadcrumb-item"><a href="/admin/usuarios">Usuarios</a></li>
                     <li class="breadcrumb-item active">Editar Usuario: {{ $user->name }}</li>
                 </ol>
             </div>
