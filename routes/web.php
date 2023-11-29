@@ -7,6 +7,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PedidoController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FrontendController;
+
+use App\Models\Producto;
 
 Route::get('/', function () {
     return view('welcome');
@@ -61,3 +64,8 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 });
+
+
+
+/* RUTAS FRONTED */
+Route::get('/', [FrontendController::class, 'index'])->name('index');
