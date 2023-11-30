@@ -97,14 +97,16 @@ class FrontendController extends Controller
         $sub_header = "Los mejores productos del mercado en España";
 
         $detalles = DetalleProducto::mostrarDetalle($id); // buscar el  producto dado su id 
-        $producto = Producto::find($id); // buscar el producto dado su id   
+        $producto_detalle = Producto::find($id); // buscar el producto dado su id
+        $productos = Producto::all();
         $stocks = StockProducto::productos_stock($id);
         
         return view('frontend.componentes.show_producto')->with([
             'header' => $header, 
             'sub_header' => $sub_header,
             'detalles' => $detalles, 
-            'producto'=>$producto, 
+            'producto_detalle'=>$producto_detalle, 
+            'productos'=>$productos,
             'stocks'=>$stocks
         ]); 
     }

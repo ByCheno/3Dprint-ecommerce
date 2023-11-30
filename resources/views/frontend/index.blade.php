@@ -1,7 +1,7 @@
 @extends('frontend.layout')
 
 @section('titulo')
-    <title>Shop Homepage - Start Bootstrap Template</title>
+    <title>Infinitecs</title>
 @endsection
 
 @section('contenido')
