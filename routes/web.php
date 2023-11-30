@@ -8,7 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PedidoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FrontendController;
-
+use App\Http\Controllers\CarritoController;
 use App\Models\Producto;
 
 Route::get('/', function () {
@@ -70,4 +70,4 @@ Route::group(['middleware' => ['auth']], function () {
 /* RUTAS FRONTED */
 Route::get('/', [FrontendController::class, 'index'])->name('index');
 Route::get('frontend/productos/show/{id}', [FrontendController::class, 'show'])->name('frontend.productos.show');
-Route::get('frontend/productos/destacados', [FrontendController::class, 'destacados'])->name('frontend.productos.destacados');
+// Route::get('carrito/agregar/{id}', [CarritoController::class,'agregarCarrito'])->name('carrito.agregar');
