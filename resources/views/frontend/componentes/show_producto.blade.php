@@ -43,5 +43,7 @@
         </div>
     </section>
 
-    @include('frontend.componentes.productos_destacados')
+    <?php
+return view('frontend.productos_destacados', ['stock' => $stock]);
+?>
 @endsection
