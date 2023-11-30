@@ -8,7 +8,7 @@
         </svg>
     </a>
     
-    <div class="container p-4 pb-0">
+    <div class="container p-4 pb-0 text-center">
         <!-- Section: Social media -->
         <section class="mb-4">
             <!-- Facebook -->
