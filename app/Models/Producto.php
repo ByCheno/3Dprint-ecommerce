@@ -40,4 +40,8 @@ class Producto extends Model
         return $this->hasMany(ImagenProducto::class); // genera una lista de usuarios dado un rol
     }
 
+    public function fotoPortada(){
+        return $this->hasOne(ImagenProducto::class)->where('tipo', 'portada')->first(); // genera una lista de usuarios dado un rol
+    }
+
 }

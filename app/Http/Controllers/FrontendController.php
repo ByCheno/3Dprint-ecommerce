@@ -4,28 +4,39 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
+use App\Models\Producto;
+
 class FrontendController extends Controller
 {
+
+    public function index()
+{
+    $header = "Infinitecs";
+    $sub_header = "Los mejores productos del mercado en España";
+
+    // Haciendo una solicitud GET a la API local
+    $respuesta = Http::timeout(60)->get('http://127.0.0.1:8000/api/v1/productos');
+
+    if ($respuesta->successful()) {
+        $productos = $respuesta->json();
+    } else {
+        $productos = [];
+    }
+
+    return view('frontend.index')->with(['header' => $header, 'sub_header' => $sub_header, 'productos' => $productos]);
+}
     
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index1()
     {
 
         $header = "Infinitecs";
         $sub_header = "Los mejores productos del mercado en España";
 
-        $response = Http::get('http://127.0.0.1:8000/api/v1/productos');
-
-        if ($response->successful()) {
-            $productos = $response->json();
+            $productos = Producto::all();
             return view('frontend.index')->with(['header' => $header, 'sub_header' => $sub_header, 'productos' => $productos]);
-
-        } else {
-            $productos = [];
-            abort($response->status(), "Error al leer los productos de la api");
-        }
 
     }
 
