@@ -8,4 +8,5 @@
     @include('frontend.componentes.header')
 
     @include('frontend.componentes.ultimos_productos')
+    {{-- @include('frontend.componentes.show_productos') --}}
 @endsection

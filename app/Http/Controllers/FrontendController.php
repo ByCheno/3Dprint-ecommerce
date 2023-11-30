@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use App\Models\Producto;
+use App\Models\DetalleProducto;
+use App\Models\StockProducto;
 
 class FrontendController extends Controller
 {
@@ -41,7 +43,11 @@ class FrontendController extends Controller
         $sub_header = "Los mejores productos del mercado en España";
 
         $productos = Producto::all();
-        return view('frontend.index')->with(['header' => $header, 'sub_header' => $sub_header, 'productos' => $productos]);
+        return view('frontend.index')->with([
+            'header' => $header, 
+            'sub_header' => $sub_header, 
+            'productos' => $productos
+        ]);
 
     }
 
@@ -64,10 +70,46 @@ class FrontendController extends Controller
     /**
      * Display the specified resource.
      */
+    public function show1(string $id)
+    {
+        try {
+            // Haciendo una solicitud GET a la API local para obtener el producto específico
+            $respuesta = Http::timeout(-1)->get("http://127.0.0.1:8000/api/v1/productos/{$id}");
+
+            if ($respuesta->successful()) {
+                $producto = $respuesta->json();
+            } else {
+                // En caso de una respuesta fallida, establece producto como null o maneja como prefieras
+                $producto = null;
+            }
+        } catch (\Exception $e) {
+            // Captura y maneja excepciones
+            return back()->withError($e->getMessage())->withInput();
+        }
+
+        // Asegúrate de modificar la vista y los datos que envías según tus necesidades
+        return view('admin.productos.show')->with(['producto' => $producto]);
+    }
     public function show(string $id)
     {
-        //
+
+        $header = "Infinitecs";
+        $sub_header = "Los mejores productos del mercado en España";
+
+        $detalles = DetalleProducto::mostrarDetalle($id); // buscar el  producto dado su id 
+        $producto = Producto::find($id); // buscar el producto dado su id   
+        $stocks = StockProducto::productos_stock($id);
+        
+        return view('frontend.componentes.show_producto')->with([
+            'header' => $header, 
+            'sub_header' => $sub_header,
+            'detalles' => $detalles, 
+            'producto'=>$producto, 
+            'stocks'=>$stocks
+        ]); 
     }
+
+
 
     /**
      * Show the form for editing the specified resource.

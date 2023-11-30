@@ -6,9 +6,9 @@
                     <div class="card h-100">
                         <!-- Product image-->
                         @if($producto->fotoPortada() != null)
-                        	<img class="card-img-top" src="{{ asset('images/productos').'/'.$producto->fotoPortada()['url'] }}" alt="..." />
+                        <img class="card-img-top" src="{{ asset('images/productos').'/'.$producto->fotoPortada()['url'] }}" alt="..." />
                         @else
-                        <img class="card-img-top" src="https://www.cucea.udg.mx/sites/default/files/styles/publicaciones/public/publicaciones/portadas/sin_portada_8.jpg?itok=yR2MLoZs" alt="..." />
+                        <img class="card-img-top" src=" {{ asset('images/cover.png') }} " alt="..." />
                         @endif
                         <!-- Product details-->
                         <div class="card-body p-4">
@@ -21,7 +21,7 @@
                         </div>
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ route('admin.productos.show', $producto->id) }}">Ver producto</a>
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ route('frontend.productos.show', $producto->id) }}">Ver producto</a>
                             </div>
                         </div>
                     </div>
