@@ -9,34 +9,39 @@ use App\Models\Producto;
 class FrontendController extends Controller
 {
 
-    public function index()
-{
-    $header = "Infinitecs";
-    $sub_header = "Los mejores productos del mercado en España";
+    public function index1()
+    {
+        $header = "Infinitecs";
+        $sub_header = "Los mejores productos del mercado en España";
 
-    // Haciendo una solicitud GET a la API local
-    $respuesta = Http::timeout(60)->get('http://127.0.0.1:8000/api/v1/productos');
+        try {
+            // Haciendo una solicitud GET a la API local
+            $respuesta = Http::timeout(-1)->get('http://127.0.0.1:8000/api/v1/productos');
 
-    if ($respuesta->successful()) {
-        $productos = $respuesta->json();
-    } else {
-        $productos = [];
+            if ($respuesta->successful()) {
+                $productos = $respuesta->json();
+            } else {
+                $productos = [];
+            }
+        } catch (\Exception $e) {
+            // Captura y maneja excepciones
+            return back()->withError($e->getMessage())->withInput();
+        }
+
+        return view('frontend.index')->with(['header' => $header, 'sub_header' => $sub_header, 'productos' => $productos]);
     }
 
-    return view('frontend.index')->with(['header' => $header, 'sub_header' => $sub_header, 'productos' => $productos]);
-}
-    
     /**
      * Display a listing of the resource.
      */
-    public function index1()
+    public function index()
     {
 
         $header = "Infinitecs";
         $sub_header = "Los mejores productos del mercado en España";
 
-            $productos = Producto::all();
-            return view('frontend.index')->with(['header' => $header, 'sub_header' => $sub_header, 'productos' => $productos]);
+        $productos = Producto::all();
+        return view('frontend.index')->with(['header' => $header, 'sub_header' => $sub_header, 'productos' => $productos]);
 
     }
 

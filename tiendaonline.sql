@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 26-11-2023 a las 23:57:06
+-- Tiempo de generación: 30-11-2023 a las 01:21:45
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -47,7 +47,7 @@ INSERT INTO `categorias` (`id`, `name`, `description`, `created_at`, `updated_at
 (5, 'Modelos 3D', 'Archivos de modelos 3D listos para imprimir', '2023-11-22 13:03:41', '2023-11-22 13:03:41'),
 (6, 'Componentes', 'Componentes electrónicos para impresoras 3D', '2023-11-22 14:33:52', '2023-11-22 14:33:52'),
 (7, 'Software', 'Software y aplicaciones para modelado 3D', '2023-11-22 14:33:52', '2023-11-22 14:33:52'),
-(8, 'Servicios de impresión', 'Servicios de impresión 3D personalizados', '2023-11-22 14:33:52', '2023-11-22 14:33:52');
+(8, 'Servicios de impresión', 'Servicios de impresión 3D personalizados', '2023-11-22 14:33:52', '2023-11-27 15:49:46');
 
 -- --------------------------------------------------------
 
@@ -78,8 +78,8 @@ INSERT INTO `detalle_pedidos` (`id`, `pedido_id`, `producto_id`, `cantidad`, `cr
 (8, 23, 2, 2, '2023-11-22 17:33:26', '2023-11-22 17:33:26'),
 (9, 22, 4, 1, '2023-11-22 17:33:26', '2023-11-22 17:33:26'),
 (14, 22, 5, 2, '2023-11-26 18:34:32', '2023-11-26 18:34:32'),
-(16, 28, 1, 4, '2023-11-26 18:41:52', '2023-11-26 18:41:52'),
-(17, 28, 2, 8, '2023-11-26 18:42:54', '2023-11-26 18:42:54');
+(18, 29, 2, 2, '2023-11-27 12:23:48', '2023-11-27 12:23:48'),
+(19, 29, 4, 1, '2023-11-27 12:24:04', '2023-11-27 12:24:04');
 
 -- --------------------------------------------------------
 
@@ -202,9 +202,10 @@ CREATE TABLE `pedidos` (
 
 INSERT INTO `pedidos` (`id`, `user_id`, `fecha`, `created_at`, `updated_at`, `estado`) VALUES
 (21, 2, '2023-11-22 10:00:00', '2023-11-22 17:26:43', '2023-11-22 17:17:22', 'completado'),
-(22, 2, '2023-11-22 11:30:00', '2023-11-22 17:26:43', '2023-11-22 17:15:40', 'pendiente'),
+(22, 2, '2023-11-22 11:30:00', '2023-11-22 17:26:43', '2023-11-27 12:26:05', 'completado'),
 (23, 3, '2023-11-22 14:00:00', '2023-11-22 17:26:43', '2023-11-22 20:00:04', 'completado'),
-(28, 5, '2023-11-26 00:00:00', '2023-11-26 18:39:56', '2023-11-26 18:43:22', 'completado');
+(29, 3, '2023-11-27 00:00:00', '2023-11-27 12:23:33', '2023-11-27 12:24:23', 'completado'),
+(31, 3, '2023-11-27 00:00:00', '2023-11-27 15:23:09', '2023-11-27 15:23:09', 'pendiente');
 
 -- --------------------------------------------------------
 
@@ -312,7 +313,9 @@ INSERT INTO `stock_productos` (`id`, `producto_id`, `fecha`, `tipo`, `created_at
 (19, 1, '2023-11-25 00:00:00', 'inicio', '2023-11-26 17:05:28', '2023-11-26 17:05:28', 12),
 (20, 1, '2023-11-26 00:00:00', 'compra', '2023-11-26 17:05:54', '2023-11-26 17:05:54', 20),
 (22, 1, '2023-11-26 19:41:52', 'compra', '2023-11-26 18:41:52', '2023-11-26 18:41:52', 4),
-(23, 2, '2023-11-26 19:42:54', 'compra', '2023-11-26 18:42:54', '2023-11-26 18:42:54', 8);
+(23, 2, '2023-11-26 19:42:54', 'compra', '2023-11-26 18:42:54', '2023-11-26 18:42:54', 8),
+(24, 2, '2023-11-27 13:23:48', 'compra', '2023-11-27 12:23:48', '2023-11-27 12:23:48', 2),
+(25, 4, '2023-11-27 13:24:04', 'compra', '2023-11-27 12:24:04', '2023-11-27 12:24:04', 1);
 
 -- --------------------------------------------------------
 
@@ -322,7 +325,7 @@ INSERT INTO `stock_productos` (`id`, `producto_id`, `fecha`, `tipo`, `created_at
 
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `role_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `role_id` bigint(20) UNSIGNED DEFAULT 2,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
@@ -338,9 +341,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `role_id`, `name`, `email`, `email_verified_at`, `password`, `user_type`, `remember_token`, `created_at`, `updated_at`) VALUES
-(2, 1, 'Administrador', 'admin@admin.com', '2023-11-20 16:31:43', '$2y$12$2amEyjzLSUqnxCtS1PBWeeOD7FLc784.JqO6xgUjGOtU/7DmznBti', 'admin', 'i2SFZyu0bzVDF5QZKLJ3keYWt2iiG77ab41eSeqncflCMVywRhJN7dCtSTCI', '2023-11-20 16:31:43', '2023-11-20 16:31:43'),
-(3, 2, 'Jose', 'jcoronelcamacho@gmail.com', NULL, '$2y$12$Z4x41XVu2n9Vgnkkt9zN1OYVYZaki0Q7NX0mCmEWX.AcIJ4GsfoUW', 'user', NULL, '2023-11-22 10:31:00', '2023-11-22 10:31:00'),
-(5, NULL, 'Javier Pérez', 'jperezzuferri@gmail.com', NULL, '$2y$12$9oIkYW5emzruo7bF1GtL7ucX2q7dSPWW.84z4lVZI.mvyGUNX5ZCu', 'user', NULL, '2023-11-22 16:31:53', '2023-11-22 16:31:53');
+(2, 1, 'Administrador', 'admin@admin.com', '2023-11-20 16:31:43', '$2y$12$2amEyjzLSUqnxCtS1PBWeeOD7FLc784.JqO6xgUjGOtU/7DmznBti', 'admin', 'MTYRyRlfvVyDmyKs17I70V9rLPGSl0kUjaUptQuXhHYxtCrhNi3t9H3Ex65H', '2023-11-20 16:31:43', '2023-11-20 16:31:43'),
+(3, 2, 'Jose', 'jcoronel@gmail.com', NULL, '$2y$12$40MOiqstx4qYzsO5UnK8A.36sQ60/4oFwTPVLUo4Q7Xl4NkUnRASC', 'user', NULL, '2023-11-22 10:31:00', '2023-11-28 10:01:51'),
+(10, 2, 'Manuel Gonzalez', 'manuel@gmail.com', NULL, '$2y$12$tIg5IPlAoU8rL8JTU90ilOPn1v.Z7sXgs/nQBxelO2yVaReICqfIK', 'user', NULL, '2023-11-27 15:51:59', '2023-11-27 15:56:23'),
+(11, 2, 'Maria Lopez', 'marialopez@gmail.com', NULL, '$2y$12$UOmaID2W7emRquLrBlc87uN2zPvDGDY2NSC21aZB8mlkNRXXxWaYK', 'user', NULL, '2023-11-27 15:57:10', '2023-11-27 15:57:10'),
+(12, 2, 'Jose Manuel', 'karlion@gmail.com', NULL, '$2y$12$6EyzAnL7WzrO69B8WMeV/eVoS2oYwAjHkIFOXKjg6QL9Rd2DrkNgG', 'user', NULL, '2023-11-27 15:57:34', '2023-11-27 15:57:34'),
+(13, 2, 'Rosa', 'rosa@gmail.com', NULL, '$2y$12$w5Yjr9T5sx0Ft46RXqgYA.H8eZtpJfcrTUX5ULA0vRnEn8mICubB6', 'user', NULL, '2023-11-27 15:57:50', '2023-11-27 15:57:50');
 
 --
 -- Índices para tablas volcadas
@@ -449,7 +455,7 @@ ALTER TABLE `categorias`
 -- AUTO_INCREMENT de la tabla `detalle_pedidos`
 --
 ALTER TABLE `detalle_pedidos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `failed_jobs`
@@ -473,7 +479,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT de la tabla `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT de la tabla `personal_access_tokens`
@@ -497,13 +503,13 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT de la tabla `stock_productos`
 --
 ALTER TABLE `stock_productos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Restricciones para tablas volcadas
