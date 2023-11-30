@@ -5,7 +5,7 @@
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 
                 @foreach ($productos as $producto)
-                    @if($producto->price >= 36)
+                    @if ($producto->price >= 36)
                         <div class="col mb-5">
                             <div class="card h-100">
                                 @if ($producto->fotoPortada() != null)

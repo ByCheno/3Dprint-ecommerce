@@ -108,6 +108,18 @@ class FrontendController extends Controller
     }
 
 
+    public function mostrarDestacados(){
+
+        $productos = Producto::all();
+        $stock = StockProducto::all();
+
+        return view('frontend.componentes.productos_destacados', [
+            'productos'=>$productos,
+            'stock'=>$stock
+        ]); 
+    }
+
+
 
     /**
      * Show the form for editing the specified resource.
