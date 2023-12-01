@@ -70,4 +70,5 @@ Route::group(['middleware' => ['auth']], function () {
 /* RUTAS FRONTED */
 Route::get('/', [FrontendController::class, 'index'])->name('index');
 Route::get('frontend/productos/show/{id}', [FrontendController::class, 'show'])->name('frontend.productos.show');
+Route::get('frontend/productos/filtrado', [FrontendController::class, 'filtrado'])->name('frontend.productos.filtrado');
 // Route::get('carrito/agregar/{id}', [CarritoController::class,'agregarCarrito'])->name('carrito.agregar');

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Producto;
 use App\Models\DetalleProducto;
 use App\Models\StockProducto;
+use App\Models\Categoria;
 
 class FrontendController extends Controller
 {
@@ -40,11 +41,13 @@ class FrontendController extends Controller
     {
 
         $header = "Infinitecs";
+        $header2 = "";
         $sub_header = "Los mejores productos del mercado en España";
 
         $productos = Producto::all();
         return view('frontend.index')->with([
             'header' => $header, 
+            'header2' => $header2,
             'sub_header' => $sub_header, 
             'productos' => $productos
         ]);
@@ -93,7 +96,8 @@ class FrontendController extends Controller
     public function show(string $id)
     {
 
-        $header = "Infinitecs";
+        $header = "Detalle producto";
+        $header2 = "";
         $sub_header = "Los mejores productos del mercado en España";
 
         $producto_detalle = Producto::find($id); // buscar el producto dado su id
@@ -101,9 +105,27 @@ class FrontendController extends Controller
         
         return view('frontend.componentes.show_producto')->with([
             'header' => $header, 
+            'header2' => $header2,
             'sub_header' => $sub_header,
             'producto_detalle'=>$producto_detalle, 
             'productos'=>$productos
+        ]); 
+    }
+
+    public function filtrado(){
+        $header = "Elige que deseas ver";
+        $header2 = "Nosotros nos encargamos del resto ;)";
+        $sub_header = "Los mejores productos del mercado 3D en España";
+
+        $categorias = Categoria::all();
+        $productos = Producto::all();
+        
+        return view('frontend.componentes.productos_categoria')->with([
+            'header' => $header, 
+            'header2' => $header2,
+            'sub_header' => $sub_header,
+            'productos'=>$productos, 
+            'categorias'=>$categorias
         ]); 
     }
 

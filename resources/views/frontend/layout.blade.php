@@ -18,5 +18,4 @@
     @include('frontend.comunes.js')
 </body>
 @include('frontend.comunes.footer')
-
 </html>
