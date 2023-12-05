@@ -11,11 +11,8 @@ use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\CarritoController;
 use App\Models\Producto;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
+
 
 Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
@@ -58,17 +55,12 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::post('/admin/pedidos/crear', [PedidoController::class, 'crear'])->name('admin.pedidos.create');
     Route::post('/admin/pedidos/asignar/{id}', [PedidoController::class, 'asignarDetallePedido'])->name('admin.pedidos.asignarDetallePedido');
 
-
 });
-
-Route::group(['middleware' => ['auth']], function () {
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
-});
-
-
 
 /* RUTAS FRONTED */
 Route::get('/', [FrontendController::class, 'index'])->name('index');
 Route::get('frontend/productos/show/{id}', [FrontendController::class, 'show'])->name('frontend.productos.show');
-Route::get('frontend/productos/filtrado', [FrontendController::class, 'filtrado'])->name('frontend.productos.filtrado');
-// Route::get('carrito/agregar/{id}', [CarritoController::class,'agregarCarrito'])->name('carrito.agregar');
+Route::get('frontend/productos/tienda', [FrontendController::class, 'tienda'])->name('frontend.productos.tienda');
+Route::post('frontend/productos/filtrado', [FrontendController::class, 'filtrar_productos'])->name('frontend.productos.filtrar_productos');
+Route::get('/frontend/carrito', [FrontendController::class, 'carrito'])->name('frontend.carrito.index');
+Route::post('/frontend/carrito/agregar/{id}', [FrontendController::class, 'agregar'])->name('frontend.carrito.agregar');

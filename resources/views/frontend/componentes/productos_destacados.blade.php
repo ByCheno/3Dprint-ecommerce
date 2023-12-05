@@ -4,11 +4,7 @@
         <h2 class="fw-bolder mb-4">Productos destacados</h2>
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 
-            @foreach ($productos as $producto)
-                @php
-                    $stock = App\Models\Producto::stockActual($producto->id);
-                @endphp
-                @if ($stock > 30)
+            @foreach ($productos_destacados as $producto)
                     <div class="col mb-5">
                         <div class="card h-100">
                             @if ($producto->fotoPortada() != null)
@@ -35,7 +31,6 @@
                             </div>
                         </div>
                     </div>
-                @endif
             @endforeach
         </div>
     </div>

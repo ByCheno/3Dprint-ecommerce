@@ -31,12 +31,18 @@
                     </div>
                     <p class="lead">{{ $producto_detalle->description }}</p>
                     <div class="d-flex">
-                        <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1"
-                            style="max-width: 3rem" />
-                            <button class="btn btn-outline-dark flex-shrink-0" type="button" data-id="{{ $producto_detalle->id }}" onclick="agregarCarrito(this.getAttribute('data-id'))">
+
+                        <form action="/frontend/carrito/agregar/{{$producto_detalle->id}}" method="POST">
+                            @csrf
+                            <input class="form-control text-center me-3" id="inputQuantity" type="number" value="1"
+                            style="max-width: 3rem" name="cantidad" />
+                            <button class="btn btn-outline-dark flex-shrink-0" type="submit" data-id="{{ $producto_detalle->id }}" onclick="agregarCarrito(this.getAttribute('data-id'))">
                                 <i class="bi-cart-fill me-1"></i>
                                 Añadir al carrito
                             </button>
+
+                        </form>
+
                     </div>
                 </div>
             </div>

@@ -28,9 +28,16 @@ class User extends Authenticatable
 
     public function isAdmin(): Attribute
     {
-        return new Attribute(
-            get: fn () => $this->user_type === \App\Enums\UserType::Admin,
-        );
+        if($this->user_type == 'admin'){
+            return new Attribute(
+                get: fn () => $this->user_type === \App\Enums\UserType::Admin,
+            );
+        }else{
+            return new Attribute(
+                get: fn () => $this->user_type === \App\Enums\UserType::User,
+            );
+        }
+      
     }
 
     /**

@@ -44,12 +44,15 @@ class FrontendController extends Controller
         $header2 = "";
         $sub_header = "Los mejores productos del mercado en España";
 
-        $productos = Producto::all();
+        $ultimos_productos = Producto::orderBy('created_at', 'desc')->limit(8)->get();
+        $productos_destacados = Producto::orderBy('price', 'desc')->limit(4)->get();
+
         return view('frontend.index')->with([
-            'header' => $header, 
+            'header' => $header,
             'header2' => $header2,
-            'sub_header' => $sub_header, 
-            'productos' => $productos
+            'sub_header' => $sub_header,
+            'productos' => $ultimos_productos,
+            'productos_destacados' => $productos_destacados
         ]);
 
     }
@@ -100,35 +103,98 @@ class FrontendController extends Controller
         $header2 = "";
         $sub_header = "Los mejores productos del mercado en España";
 
-        $producto_detalle = Producto::find($id); // buscar el producto dado su id
-        $productos = Producto::all();
-        
+        $producto_detalle = Producto::find($id); // dame el detalle del producto con id X
+        $productos = Producto::all(); //Dame todos los productos
+        $productos_destacados = Producto::orderBy('price', 'desc')->limit(4)->get();
+
         return view('frontend.componentes.show_producto')->with([
-            'header' => $header, 
+            'header' => $header,
             'header2' => $header2,
             'sub_header' => $sub_header,
-            'producto_detalle'=>$producto_detalle, 
-            'productos'=>$productos
-        ]); 
+            'producto_detalle' => $producto_detalle,
+            'productos_destacados' => $productos_destacados,
+            'productos' => $productos
+        ]);
     }
 
-    public function filtrado(){
+    public function tienda()
+    {
         $header = "Elige que deseas ver";
         $header2 = "Nosotros nos encargamos del resto ;)";
         $sub_header = "Los mejores productos del mercado 3D en España";
 
         $categorias = Categoria::all();
+
         $productos = Producto::all();
-        
+
+        $productos_destacados = Producto::orderBy('price', 'desc')->limit(4)->get();
+
         return view('frontend.componentes.productos_categoria')->with([
-            'header' => $header, 
+            'header' => $header,
             'header2' => $header2,
             'sub_header' => $sub_header,
-            'productos'=>$productos, 
-            'categorias'=>$categorias
-        ]); 
+            'productos' => $productos,
+            'categorias' => $categorias,
+            'productos_destacados' => $productos_destacados,
+        ]);
     }
 
+    public function filtrar_productos(Request $request)
+    {
+        $header = "Elige que deseas ver";
+        $header2 = "Nosotros nos encargamos del resto ;)";
+        $sub_header = "Los mejores productos del mercado 3D en España";
+
+        $categorias = Categoria::all();
+
+        $productos = Producto::query();
+
+        // Aplicar filtro por categoría si se proporciona
+        if ($request->filled('categoria_id')) {
+            $productos->where('categoria_id', $request->input('categoria_id'));
+        }
+
+        // Aplicar filtro por precio mínimo si se proporciona
+        if ($request->filled('pmin')) {
+            $productos->where('price', '>=', $request->input('pmin'));
+        }
+
+        // Aplicar filtro por precio máximo si se proporciona
+        if ($request->filled('pmax')) {
+            $productos->where('price', '<=', $request->input('pmax'));
+        }
+
+        // Obtener los resultados
+        $productos_filtrados = $productos->get();
+
+        $productos_destacados = Producto::orderBy('price', 'desc')->limit(4)->get();
+
+        return view('frontend.componentes.productos_categoria')->with([
+            'header' => $header,
+            'header2' => $header2,
+            'sub_header' => $sub_header,
+            'productos' => $productos_filtrados,
+            'categorias' => $categorias,
+            'productos_destacados' => $productos_destacados,
+        ]);
+    }
+
+    public function carrito()
+    {
+        $header = "Elige que deseas ver";
+        $header2 = "Nosotros nos encargamos del resto ;)";
+        $sub_header = "Los mejores productos del mercado 3D en España";
+
+
+        $productos_destacados = Producto::orderBy('price', 'desc')->limit(4)->get();
+
+        return view('frontend.carrito.index')->with([
+            'header' => $header,
+            'header2' => $header2,
+            'sub_header' => $sub_header,
+            'productos_destacados' => $productos_destacados,
+        ]);
+    }
 
 
     /**
@@ -153,5 +219,28 @@ class FrontendController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function agregar(Request $request,$id){
+
+        $producto_id = $id;
+        $producto = Producto::find($producto_id);
+        $carrito = session()->get('carrito', []);
+
+        // Si el producto ya está en el carrito, incrementa la cantidad
+        if(isset($carrito[$producto->id])) {
+            $carrito[$producto->id]['cantidad'] += $request->cantidad;
+        } else {
+            // Si no está en el carrito, añádelo
+            $carrito[$producto->id] = [
+                "nombre" => $producto->nombre,
+                "precio" => $producto->precio,
+                "cantidad" => $request->cantidad
+            ];
+        }
+
+        session()->put('carrito', $carrito);
+        return redirect()->route('frontend.productos.tienda');
+
     }
 }

@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Auth;
 class IsAdmin
 {
     /**
@@ -15,9 +16,10 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next): Closure|RedirectResponse|Response
     {
-        if (! $request->user()->isAdmin()) {
-            return redirect()->route('home');
-        }
-        return $next($request);
+        if (Auth::user() &&  Auth::user()->role_id == 1) {
+            return $next($request);
+       }
+
+       return redirect()->route('index')->with('error','No tienes permisos de administrador');
     }
 }
