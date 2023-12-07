@@ -65,17 +65,13 @@ class FrontendController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
+    
     public function show1(string $id)
     {
         try {
@@ -181,9 +177,9 @@ class FrontendController extends Controller
 
     public function carrito()
     {
-        $header = "Elige que deseas ver";
-        $header2 = "Nosotros nos encargamos del resto ;)";
-        $sub_header = "Los mejores productos del mercado 3D en España";
+        $header = "Infinitecs";
+        $header2 = "Mi cesta";
+        $sub_header = "";
 
 
         $productos_destacados = Producto::orderBy('price', 'desc')->limit(4)->get();
@@ -195,27 +191,17 @@ class FrontendController extends Controller
             'productos_destacados' => $productos_destacados,
         ]);
     }
-
-
-    /**
-     * Show the form for editing the specified resource.
-     */
+    
     public function edit(string $id)
     {
         //
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
+    
     public function update(Request $request, string $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         //
@@ -242,5 +228,19 @@ class FrontendController extends Controller
         session()->put('carrito', $carrito);
         return redirect()->route('frontend.productos.tienda');
 
+    }
+
+    public function contacto()
+    {
+        $header = "Infinitecs";
+        $header2 = "";
+        $sub_header = "Contacta con nosotros";
+
+
+        return view('frontend.componentes.contacto')->with([
+            'header' => $header,
+            'header2' => $header2,
+            'sub_header' => $sub_header,
+        ]);
     }
 }
