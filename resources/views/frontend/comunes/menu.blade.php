@@ -6,8 +6,8 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ route('index') }}">Inicio</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('frontend.productos.tienda') }}">Productos</a></li>
-                <li class="nav-item"><a class="nav-link" href="#!">Contacto</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('frontend.contacto') }}">Sobre nosotros</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('frontend.contacto') }}">Contacto</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('frontend.aboutus') }}">Sobre nosotros</a></li>
                 @if(Auth::check())
                     <li class="nav-item"><a class="nav-link text-danger" href="#!">Bienvenido {{ Auth::user()->name }}!</a></li>
                 @endif

@@ -230,11 +230,25 @@ class FrontendController extends Controller
 
     }
 
+    public function aboutus()
+    {
+        $header = "Infinitecs";
+        $header2 = "";
+        $sub_header = "Sobre nosotros";
+
+
+        return view('frontend.componentes.aboutus')->with([
+            'header' => $header,
+            'header2' => $header2,
+            'sub_header' => $sub_header,
+        ]);
+    }
+
     public function contacto()
     {
         $header = "Infinitecs";
         $header2 = "";
-        $sub_header = "Contacta con nosotros";
+        $sub_header = "Sobre nosotros";
 
 
         return view('frontend.componentes.contacto')->with([

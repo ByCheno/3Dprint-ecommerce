@@ -64,4 +64,5 @@ Route::get('frontend/productos/tienda', [FrontendController::class, 'tienda'])->
 Route::post('frontend/productos/filtrado', [FrontendController::class, 'filtrar_productos'])->name('frontend.productos.filtrar_productos');
 Route::get('/frontend/carrito', [FrontendController::class, 'carrito'])->name('frontend.carrito.index');
 Route::post('/frontend/carrito/agregar/{id}', [FrontendController::class, 'agregar'])->name('frontend.carrito.agregar');
+Route::get('/frontend/aboutus', [FrontendController::class, 'aboutus'])->name('frontend.aboutus');
 Route::get('/frontend/contacto', [FrontendController::class, 'contacto'])->name('frontend.contacto');
