@@ -7,7 +7,13 @@
 @section('contenido')
     @include('frontend.componentes.header')
 
-    <section class="ftco-section">
+    <style>
+        .bg-custom {
+            background-color: rgba(255, 239, 230, 0.3);
+        }
+    </style>
+
+    <section class="ftco-section mt-5 bg-custom">
         <div class="content">
             <div class="container">
                 <div class="row justify-content-center">
@@ -53,7 +59,6 @@
                                 <p>Es importante para nosotros entender tus necesidades detalladamente. Por favor,
                                     descríbenos tu situación con claridad y proporciona toda la información posible para que
                                     podamos ofrecerte la mejor asistencia.</p>
-                                <p><a href="#">Leer más</a></p>
                             </div>
                         </div>
                     </div>
