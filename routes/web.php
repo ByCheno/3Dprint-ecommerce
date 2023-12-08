@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\CarritoController;
 use App\Models\Producto;
-
+use App\Http\Controllers\MiPerfilController;
 Auth::routes();
 
 
@@ -62,7 +62,15 @@ Route::get('/', [FrontendController::class, 'index'])->name('index');
 Route::get('frontend/productos/show/{id}', [FrontendController::class, 'show'])->name('frontend.productos.show');
 Route::get('frontend/productos/tienda', [FrontendController::class, 'tienda'])->name('frontend.productos.tienda');
 Route::post('frontend/productos/filtrado', [FrontendController::class, 'filtrar_productos'])->name('frontend.productos.filtrar_productos');
+
 Route::get('/frontend/carrito', [FrontendController::class, 'carrito'])->name('frontend.carrito.index');
 Route::post('/frontend/carrito/agregar/{id}', [FrontendController::class, 'agregar'])->name('frontend.carrito.agregar');
+Route::get('/frontend/carrito/producto/eliminar/{id}', [FrontendController::class, 'eliminar_producto_carrito'])->name('frontend.carrito.eliminar_producto_carrito');
+Route::get('/frontend/carrito/eliminar', [FrontendController::class, 'eliminar_carrito'])->name('frontend.carrito.eliminar_carrito');
+Route::post('/frontend/carrito/procesar', [FrontendController::class, 'procesar_carrito'])->name('frontend.carrito.procesar_carrito');
+
 Route::get('/frontend/aboutus', [FrontendController::class, 'aboutus'])->name('frontend.aboutus');
 Route::get('/frontend/contacto', [FrontendController::class, 'contacto'])->name('frontend.contacto');
+
+/* MI PERFIL */
+Route::get('/frontend/miperfil', [MiPerfilController::class, 'index'])->name('frontend.miperfil.index');

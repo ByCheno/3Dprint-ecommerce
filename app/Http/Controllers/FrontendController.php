@@ -8,7 +8,8 @@ use App\Models\Producto;
 use App\Models\DetalleProducto;
 use App\Models\StockProducto;
 use App\Models\Categoria;
-
+use App\Models\Pedido;
+use App\Models\DetallePedido;
 class FrontendController extends Controller
 {
 
@@ -192,6 +193,50 @@ class FrontendController extends Controller
         ]);
     }
     
+    public function eliminar_producto_carrito($id)
+    {
+        $carrito = session()->get('carrito');
+
+        if(isset($carrito[$id])) {
+            unset($carrito[$id]);
+        }
+
+        session()->put('carrito', $carrito);
+        return redirect()->route('frontend.carrito.index')->with('success', 'Producto eliminado del carrito');
+    }
+
+    public function eliminar_carrito()
+    {
+        session()->forget('carrito');
+        return redirect()->route('frontend.carrito.index')->with('success', 'Carrito eliminado');
+    }
+
+    public function procesar_carrito(){
+
+        $user_id = auth()->user()->id;
+        $fecha = now();
+
+        $pedido = new Pedido();
+        $pedido->user_id = $user_id;
+        $pedido->fecha = $fecha;
+        $pedido->estado = "pendiente";
+        $pedido->save();
+
+        $carrito = session()->get('carrito');
+
+        foreach ($carrito as $id => $producto) {
+            $detalle = new DetallePedido();
+            $detalle->pedido_id = $pedido->id;
+            $detalle->producto_id = $id;
+            $detalle->cantidad = $producto['cantidad'];
+            $detalle->save();
+        }
+
+        session()->forget('carrito');
+        return redirect()->route('frontend.carrito.index')->with('success', 'Pedido realizado correctamente');
+
+    }
+
     public function edit(string $id)
     {
         //
@@ -248,7 +293,7 @@ class FrontendController extends Controller
     {
         $header = "Infinitecs";
         $header2 = "";
-        $sub_header = "Sobre nosotros";
+        $sub_header = "Formulario de contacto";
 
 
         return view('frontend.componentes.contacto')->with([

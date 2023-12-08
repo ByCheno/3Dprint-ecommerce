@@ -61,13 +61,13 @@
                                     <tbody>
                                         @php
                                             $total = 0;
+                                            $subtotal_total = 0;
                                         @endphp
                                         @foreach($detalles as $detalle)
-
                                          @php
                                             $subtotal = App\Models\Producto::find($detalle->producto_id)->price * $detalle->cantidad;
-                                            $total += $subtotal;
-                                         @endphp
+                                            $subtotal_total += $subtotal; 
+                                        @endphp
                                            
                                             <tr>
                                                 <td>{{ $detalle->id }}</td>
@@ -80,13 +80,25 @@
                                             </tr>
                                         @endforeach
                                         <tr class="text-danger" style="font-size: 25px">
+                                            <td><b>SUBTOTAL</b></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td><b>{{$subtotal_total}}€</b></td>
+                                        </tr>
+                                        <tr class="text-danger" style="font-size: 25px">
+                                            @php
+                                                $total += $subtotal_total * 1.21 + 20;
+                                            @endphp
                                             <td><b>TOTAL</b></td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td><b>{{$total}}€</b></td>
+                                            <td><b>{{round($total,2)}}€</b></td>
                                         </tr>
                                     </tbody>
                                 </table>

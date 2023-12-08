@@ -22,6 +22,7 @@ class CarritoController extends Controller
             $carrito[$id]['cantidad']++;
         } else {
             $carrito[$id] = [
+                "id" => $producto->id,
                 "nombre" => $producto->nombre,
                 "cantidad" => 1,
                 "precio" => $producto->precio,

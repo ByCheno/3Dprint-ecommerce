@@ -33,11 +33,29 @@
                                         </div>
                                     </div>
 
+                                    @php
+                                        $subtotal = 0;
+                                    @endphp
+
+                                    @if(session('success'))
+                                    <div class="row mt-3">
+                                        <div class="col-lg-12">
+                                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                <i class="fa fa-info-circle"></i> {{ session('success') }}
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endif
 
                                     @if(session('carrito'))
+                                        
                                         @foreach (session('carrito') as $id => $detalles)
                                         @php
                                             $producto = App\Models\Producto::find($id);
+                                            $subtotal += $detalles['cantidad'] * $producto->price; 
                                         @endphp
                                         <div class="card mb-3">
                                             <div class="card-body">
@@ -57,9 +75,9 @@
                                                             <h5 class="fw-normal mb-0">{{ $detalles['cantidad'] }}</h5>
                                                         </div>
                                                         <div style="width: 80px;">
-                                                            <h5 class="mb-0">{{ $producto->price }}€</h5>
+                                                            <h5 class="mb-0">{{ $detalles['cantidad'] * $producto->price }}€</h5>
                                                         </div>
-                                                        <a href="#!" style="color: #cecece;"><i
+                                                        <a href="/frontend/carrito/producto/eliminar/{{$id}}" style="color: #cecece;"><i
                                                                 class="fas fa-trash-alt"></i></a>
                                                     </div>
                                                 </div>
@@ -68,6 +86,14 @@
                                            
                                         @endforeach
                                     @endif
+
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <a href="/frontend/carrito/eliminar" class="btn btn-danger float-end">
+                                                <i class="fa fa-trash"></i> Vaciar Carrito
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="col-lg-5">
@@ -92,7 +118,7 @@
                                                 <div class="form-outline form-white mb-4">
                                                     <input type="text" id="typeName"
                                                         class="form-control form-control-lg" siez="17"
-                                                        placeholder="Tu nombre aquí" />
+                                                        placeholder="Tu nombre aquí" value="{{auth()->user()->name}}" />
                                                     <label class="form-label" for="typeName">Propietario de la tarjeta</label>
                                                 </div>
 
@@ -128,28 +154,40 @@
 
                                             <hr class="my-4">
 
-                                            <div class="d-flex justify-content-between">
-                                                <p class="mb-2">Subtotal</p>
-                                                <p class="mb-2">$4798.00</p>
-                                            </div>
-
-                                            <div class="d-flex justify-content-between">
-                                                <p class="mb-2">Envío</p>
-                                                <p class="mb-2">$20.00</p>
-                                            </div>
-
-                                            <div class="d-flex justify-content-between mb-4">
-                                                <p class="mb-2">Total(Incl. taxes)</p>
-                                                <p class="mb-2">$4818.00</p>
-                                            </div>
-
-                                            <button type="button" class="btn btn-info btn-block btn-lg">
+                                            @if(session('carrito'))
                                                 <div class="d-flex justify-content-between">
-                                                    <span>$4818.00</span>
-                                                    <span>Realizar pedido <i class="fas fa-long-arrow-alt-right ms-2"></i></span>
+                                                    <p class="mb-2">Subtotal</p>
+                                                    <p class="mb-2">{{ $subtotal }}€</p>
                                                 </div>
-                                            </button>
 
+                                                <div class="d-flex justify-content-between">
+                                                    <p class="mb-2">Envío</p>
+                                                    @php
+                                                        $precio_envio = 20;
+                                                    @endphp
+                                                    <p class="mb-2">{{$precio_envio}}€</p>
+                                                </div>
+
+                                                <div class="d-flex justify-content-between mb-4">
+                                                    <p class="mb-2">Total (21% IVA)</p>
+                                                    <p class="mb-2">
+                                                        @php
+                                                            $total = ($subtotal + $precio_envio) + ($subtotal * 0.21);
+                                                        @endphp
+                                                        {{ round($total,2) }}€
+                                                    </p>
+                                                </div>
+
+                                                <form action="/frontend/carrito/procesar" method="POST">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-info btn-block btn-lg">
+                                                        <div class="d-flex justify-content-between">
+                                                            <span> {{ round($total,2) }}€</span>
+                                                            <span>Realizar pedido <i class="fas fa-long-arrow-alt-right ms-2"></i></span>
+                                                        </div>
+                                                    </button>
+                                                </form>
+                                            @endif
                                         </div>
                                     </div>
 
