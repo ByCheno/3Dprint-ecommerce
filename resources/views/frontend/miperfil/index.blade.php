@@ -7,6 +7,8 @@
 @section('contenido')
     @include('frontend.componentes.header')
 
+
+
     <section class="h-100 h-custom" style="background-color: #eee;">
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
@@ -26,9 +28,6 @@
                                         <a class="nav-link" id="vert-tabs-messages-tab" data-toggle="pill"
                                             href="#vert-tabs-messages" role="tab" aria-controls="vert-tabs-messages"
                                             aria-selected="false"><i class="fa fa-edit"></i> Cambiar Contraseña</a>
-                                        <a class="nav-link" id="vert-tabs-settings-tab" data-toggle="pill"
-                                            href="#vert-tabs-settings" role="tab" aria-controls="vert-tabs-settings"
-                                            aria-selected="false"><i class="fa fa-credit-card"></i> Añadir Tarjeta</a>
                                     </div>
                                 </div>
                                 <div class="col-7 col-sm-9">
@@ -42,7 +41,8 @@
                                                     <h5 class="widget-user-desc">Founder &amp; CEO</h5>
                                                 </div>
                                                 <div class="widget-user-image">
-                                                    <img class="img-circle elevation-2" src="https://adminlte.io/themes/v3/dist/img/user1-128x128.jpg"
+                                                    <img class="img-circle elevation-2"
+                                                        src="https://adminlte.io/themes/v3/dist/img/user1-128x128.jpg"
                                                         alt="User Avatar">
                                                 </div>
                                                 <div class="card-footer">
@@ -78,13 +78,51 @@
                                         </div>
                                         <div class="tab-pane fade" id="vert-tabs-profile" role="tabpanel"
                                             aria-labelledby="vert-tabs-profile-tab">
-                                            Mauris tincidunt mi at erat gravida, eget tristique urna bibendum. Mauris
-                                            pharetra purus ut ligula tempor, et vulputate metus facilisis. Lorem ipsum dolor
-                                            sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus
-                                            orci luctus et ultrices posuere cubilia Curae; Maecenas sollicitudin, nisi a
-                                            luctus interdum, nisl ligula placerat mi, quis posuere purus ligula eu lectus.
-                                            Donec nunc tellus, elementum sit amet ultricies at, posuere nec nunc. Nunc
-                                            euismod pellentesque diam.
+                                            <h3>Listado de Pedidos</h3>
+                                            <div class="table-responsive">
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>ID</th>
+                                                            <th>Fecha</th>
+                                                            <th>Estado</th>
+                                                            <th>Opciones</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                        @php
+                                                            $pedidos = auth()
+                                                                ->user()
+                                                                ->pedidos()
+                                                                ->orderBy('created_at', 'desc')
+                                                                ->get();
+                                                        @endphp
+
+                                                        @foreach ($pedidos as $pedido)
+                                                            <tr>
+                                                                <td>{{ $pedido->id }}</td>
+                                                                <td>{{ date('d-m-Y H:i:s', strtotime($pedido->fecha)) }}</td>
+                                                                <td>
+                                                                    @if ($pedido->estado == 'pendiente')
+                                                                        <span class="badge badge-warning">Pendiente</span>
+                                                                    @else
+                                                                        <span class="badge badge-success">Completado</span>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    <a data-id="{{ $pedido->id }}" data-bs-toggle="modal"
+                                                                        data-bs-target="#modalPedidoDetalle" href="#"
+                                                                        class="btn btn-primary btn-sm boton-ver"><i
+                                                                            class="fa fa-eye"></i></a>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
                                         </div>
                                         <div class="tab-pane fade" id="vert-tabs-messages" role="tabpanel"
                                             aria-labelledby="vert-tabs-messages-tab">
@@ -98,16 +136,6 @@
                                             lectus ipsum gravida arcu, id fermentum metus arcu vel metus. Curabitur eget sem
                                             eu risus tincidunt eleifend ac ornare magna.
                                         </div>
-                                        <div class="tab-pane fade" id="vert-tabs-settings" role="tabpanel"
-                                            aria-labelledby="vert-tabs-settings-tab">
-                                            Pellentesque vestibulum commodo nibh nec blandit. Maecenas neque magna, iaculis
-                                            tempus turpis ac, ornare sodales tellus. Mauris eget blandit dolor. Quisque
-                                            tincidunt venenatis vulputate. Morbi euismod molestie tristique. Vestibulum
-                                            consectetur dolor a vestibulum pharetra. Donec interdum placerat urna nec
-                                            pharetra. Etiam eget dapibus orci, eget aliquet urna. Nunc at consequat diam.
-                                            Nunc et felis ut nisl commodo dignissim. In hac habitasse platea dictumst.
-                                            Praesent imperdiet accumsan ex sit amet facilisis.
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -118,5 +146,88 @@
         </div>
     </section>
 
+    <div class="modal fade" id="modalPedidoDetalle" tabindex="-1" aria-labelledby="modalPedidoDetalleLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalPedidoDetalleLabel">Detalle del Pedido: <span
+                            id="detallePedidoId"></span> </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <table id="tablaDetalles" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Cantidad</th>
+                                        <th>Precio</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="filasDetallePedido">
+
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3">Total</td>
+                                        <td id="totalPedido"></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @include('frontend.componentes.productos_destacados')
+@endsection
+
+@section('js')
+    <script>
+        $(document).ready(function() {
+
+            $('.boton-ver').click(function() {
+                var id = $(this).attr('data-id');
+                $('#detallePedidoId').html(id);
+                $('#filasDetallePedido').html('');
+
+                $.ajax({
+                    url: "/frontend/miperfil/detallespedido/" + id,
+                    method: 'GET',
+                    data: {
+                        id: id
+                    },
+                    success: function(data) {
+
+                        let detalles = JSON.parse(data);
+                        let total = 0;
+                        for (let i = 0; i < detalles.length; i++) {
+                            let subtotal = detalles[i].precio_producto * detalles[i].cantidad;
+                            total += subtotal;
+                            let fila = '<tr><td>' + detalles[i].nombre_producto + '</td><td>' +
+                                detalles[i].precio_producto + '</td><td>' + detalles[i]
+                                .cantidad + '</td><td>' + subtotal + '€</td></tr>';
+                            $('#filasDetallePedido').append(fila);
+                        }
+
+                        $('#totalPedido').html(total + '€');
+                    }
+                });
+
+                $('#modalPedidoDetalle').modal('show');
+            });
+
+
+        });
+    </script>
 @endsection

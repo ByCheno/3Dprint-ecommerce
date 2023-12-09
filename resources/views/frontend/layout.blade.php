@@ -16,6 +16,8 @@
     @yield('contenido')
 
     @include('frontend.comunes.js')
+
+    @yield('js')
 </body>
 @include('frontend.comunes.footer')
 </html>

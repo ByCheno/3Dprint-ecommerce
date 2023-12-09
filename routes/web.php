@@ -74,3 +74,4 @@ Route::get('/frontend/contacto', [FrontendController::class, 'contacto'])->name(
 
 /* MI PERFIL */
 Route::get('/frontend/miperfil', [MiPerfilController::class, 'index'])->name('frontend.miperfil.index');
+Route::get('/frontend/miperfil/detallespedido/{id}', [MiPerfilController::class, 'detallesPedido'])->name('frontend.miperfil.detallesPedido');

@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Producto;
 use App\Models\Categoria;
-
+use App\Models\DetallePedido;
+use App\Models\Pedido;
 class MiPerfilController extends Controller
 {
     /**
@@ -28,6 +29,28 @@ class MiPerfilController extends Controller
             'categorias' => $categorias,
             'productos_destacados' => $productos_destacados,
         ]);
+    }
+
+    public function detallesPedido($id){
+       
+        $detalles = DetallePedido::mostrarDetalle($id); // buscar el  producto dado su id 
+        
+        $detalles_pedidos = array();
+
+        foreach($detalles as $detalle){
+            $nombre_producto = Producto::find($detalle->producto_id)->name;
+            $precio_producto = Producto::find($detalle->producto_id)->price;
+            $cantidad = $detalle->cantidad;
+            
+            $detalles_pedidos[] = array(
+                'nombre_producto' => $nombre_producto,
+                'precio_producto' => $precio_producto,
+                'cantidad' => $cantidad,
+            );
+        }
+
+        return json_encode($detalles_pedidos);    
+
     }
 
     /**

@@ -219,7 +219,7 @@ class FrontendController extends Controller
         $pedido = new Pedido();
         $pedido->user_id = $user_id;
         $pedido->fecha = $fecha;
-        $pedido->estado = "pendiente";
+        $pedido->estado = "completado";
         $pedido->save();
 
         $carrito = session()->get('carrito');
