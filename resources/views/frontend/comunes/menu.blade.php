@@ -1,6 +1,9 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="{{ route('index') }}">Infinitecs</a>
+        <a class="navbar-brand" href="{{ route('index') }}">
+            <img width="40" style="border-radius: 40px;" src="http://127.0.0.1:8000/vendor/adminlte/dist/img/infinitecs_logo2.png" />
+            Infinitecs
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
                 class="navbar-toggler-icon"></span></button>
@@ -12,10 +15,7 @@
                 </li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('frontend.contacto') }}">Contacto</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('frontend.aboutus') }}">Sobre nosotros</a></li>
-                @if (Auth::check())
-                    <li class="nav-item"><a class="nav-link text-danger" href="/frontend/miperfil">Bienvenido
-                            {{ Auth::user()->name }}!</a></li>
-                @endif
+                
             </ul>
 
             @if (!Auth::check())
@@ -26,13 +26,17 @@
             @endif
 
             @if (Auth::check())
+            <a class="btn btn-success mr-2" href="/frontend/miperfil"><i class="fa fa-user"></i> Bienvenido
+                {{ Auth::user()->name }}!
+            </a>
+
                 <a class="btn btn-outline-dark mr-2" href="/frontend/carrito">
                     <i class="bi-cart-fill me-1"></i>
                     Cesta
                     <span id="num-productos" class="badge bg-dark text-white ms-1 rounded-pill">@if(session('carrito')){{ count(session('carrito')) }}@else 0 @endif</span>
                 </a>
 
-                <form class="ml-3" id="logout-form" action="/logout" method="POST">
+                <form id="logout-form" action="/logout" method="POST">
                     @csrf
                     <button class="btn btn-outline-info" type="submit"> <i class="fas fa-sign-out-alt"></i> Salir
                     </button>

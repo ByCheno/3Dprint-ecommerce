@@ -161,6 +161,7 @@
                             <table id="tablaDetalles" class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <td>Imagen</td>
                                         <th>Producto</th>
                                         <th>Cantidad</th>
                                         <th>Precio</th>
@@ -172,7 +173,7 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="3">Total</td>
+                                        <td colspan="4">Total</td>
                                         <td id="totalPedido"></td>
                                     </tr>
                                 </tfoot>
@@ -212,11 +213,16 @@
                         let detalles = JSON.parse(data);
                         let total = 0;
                         for (let i = 0; i < detalles.length; i++) {
+                            
                             let subtotal = detalles[i].precio_producto * detalles[i].cantidad;
                             total += subtotal;
-                            let fila = '<tr><td>' + detalles[i].nombre_producto + '</td><td>' +
+                            
+                            let imagen = '<img src="/images/productos/' + detalles[i].foto_portada + '" width="50">';
+                           
+                            let fila = '<tr><td>'+imagen+'</td><td>' + detalles[i].nombre_producto + '</td><td>' +
                                 detalles[i].precio_producto + '</td><td>' + detalles[i]
                                 .cantidad + '</td><td>' + subtotal + '€</td></tr>';
+
                             $('#filasDetallePedido').append(fila);
                         }
 

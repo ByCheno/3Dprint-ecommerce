@@ -41,11 +41,13 @@ class MiPerfilController extends Controller
             $nombre_producto = Producto::find($detalle->producto_id)->name;
             $precio_producto = Producto::find($detalle->producto_id)->price;
             $cantidad = $detalle->cantidad;
-            
+            $foto_portada = Producto::find($detalle->producto_id)->fotoPortada()->url;
+
             $detalles_pedidos[] = array(
                 'nombre_producto' => $nombre_producto,
                 'precio_producto' => $precio_producto,
                 'cantidad' => $cantidad,
+                'foto_portada' => $foto_portada,
             );
         }
 
