@@ -21,14 +21,29 @@
                         <div class="row align-items-center">
                             <div class="col-lg-7 mb-5 mb-lg-0">
                                 <h2 class="mb-5">Completa el formulario.</h2>
-                                <form class="border-right pr-5 mb-5" method="post" id="contactForm" name="contactForm">
+                               
+                                @if(session('success'))
+                                    <div class="row mt-3">
+                                        <div class="col-lg-12">
+                                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                <i class="fa fa-info-circle"></i> {{ session('success') }}
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                                
+                                <form class="border-right pr-5 mb-5" method="post" action="/frontend/contacto/enviar" id="contactForm" name="contactForm">
+                                    @csrf
                                     <div class="row">
                                         <div class="col-md-6 form-group">
-                                            <input type="text" class="form-control" name="fname" id="fname"
+                                            <input type="text" class="form-control" name="name" id="fname"
                                                 placeholder="Nombre de pila">
                                         </div>
                                         <div class="col-md-6 form-group">
-                                            <input type="text" class="form-control" name="lname" id="lname"
+                                            <input type="text" class="form-control" name="surname" id="lname"
                                                 placeholder="Apellido">
                                         </div>
                                     </div>
@@ -40,7 +55,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12 form-group">
-                                            <textarea class="form-control" name="message" id="message" cols="30" rows="7"
+                                            <textarea class="form-control" name="description" id="message" cols="30" rows="7"
                                                 placeholder="Escribe tu mensaje"></textarea>
                                         </div>
                                     </div>

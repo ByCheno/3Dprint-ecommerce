@@ -38,15 +38,12 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('/admin/productos/fotoportada/{id}', [ProductoController::class, 'actualizarFotoPortada'])->name('admin.productos.renamePhotoHome');
     Route::get('/admin/productos/imagenes/eliminar/{id}', [ProductoController::class, 'eliminarImagen'])->name('admin.productos.deleteImages');
 
-
-
     Route::get('/admin/usuarios', [UserController::class, 'index'])->name('admin.users.index');
     Route::get('/admin/usuarios/eliminar/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
     Route::get('/admin/usuarios/ver/{id}', [UserController::class, 'show'])->name('admin.usuarios.show');
     Route::post('/admin/usuarios/crear', [UserController::class, 'crear'])->name('admin.users.create');
     Route::get('/admin/usuarios/editar/{id}', [UserController::class, 'editar'])->name('admin.users.edit');
     Route::post('/admin/usuarios/update/{id}', [UserController::class, 'update'])->name('admin.users.update');
-
 
     Route::get('/admin/pedidos', [PedidoController::class, 'index'])->name('admin.pedidos.index');
     Route::get('/admin/pedidos/eliminar/{id}', [PedidoController::class, 'destroy'])->name('admin.pedidos.destroy');
@@ -71,7 +68,11 @@ Route::post('/frontend/carrito/procesar', [FrontendController::class, 'procesar_
 
 Route::get('/frontend/aboutus', [FrontendController::class, 'aboutus'])->name('frontend.aboutus');
 Route::get('/frontend/contacto', [FrontendController::class, 'contacto'])->name('frontend.contacto');
+Route::post('/frontend/contacto/enviar', [FrontendController::class, 'enviar_contacto'])->name('frontend.contacto.enviar');
 
 /* MI PERFIL */
 Route::get('/frontend/miperfil', [MiPerfilController::class, 'index'])->name('frontend.miperfil.index');
 Route::get('/frontend/miperfil/detallespedido/{id}', [MiPerfilController::class, 'detallesPedido'])->name('frontend.miperfil.detallesPedido');
+
+/* TEST API Javascript */
+Route::get('/frontend/mi-api', [FrontendController::class, 'miApi'])->name('frontend.api.api');

@@ -13,9 +13,21 @@ class ApiController extends Controller
      * Display a listing of the resource.
      */
     public function productos()
-    {        
-        $productos = Producto::orderBy('id', 'desc')->get();        
-        return response()->json($productos);
+    {   
+        /* productos final es un array que tendrá como claves id, nombre, precio y la foto de portada */     
+        $productos_final = [];
+        $productos = Producto::orderBy('id', 'desc')->limit(8)->get();
+        foreach($productos as $producto){
+            $producto_final = []; 
+            $producto_final['id'] = $producto->id;
+            $producto_final['name'] = $producto->name;
+            $producto_final['price'] = $producto->price;
+            $producto_final['foto_portada'] = $producto->fotoPortada();
+            array_push($productos_final, $producto_final);
+        }
+       
+
+        return response()->json($productos_final);
     }
 
     public function categorias()

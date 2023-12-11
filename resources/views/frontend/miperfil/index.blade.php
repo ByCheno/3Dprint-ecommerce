@@ -25,9 +25,6 @@
                                         <a class="nav-link" id="vert-tabs-profile-tab" data-toggle="pill"
                                             href="#vert-tabs-profile" role="tab" aria-controls="vert-tabs-profile"
                                             aria-selected="false"><i class="fa fa-list"></i> Pedidos</a>
-                                        <a class="nav-link" id="vert-tabs-messages-tab" data-toggle="pill"
-                                            href="#vert-tabs-messages" role="tab" aria-controls="vert-tabs-messages"
-                                            aria-selected="false"><i class="fa fa-edit"></i> Cambiar Contraseña</a>
                                     </div>
                                 </div>
                                 <div class="col-7 col-sm-9">
@@ -36,37 +33,32 @@
                                             aria-labelledby="vert-tabs-home-tab">
                                             <div class="card card-widget widget-user">
 
-                                                <div class="widget-user-header bg-info">
-                                                    <h3 class="widget-user-username">Alexander Pierce</h3>
-                                                    <h5 class="widget-user-desc">Founder &amp; CEO</h5>
-                                                </div>
-                                                <div class="widget-user-image">
-                                                    <img class="img-circle elevation-2"
-                                                        src="https://adminlte.io/themes/v3/dist/img/user1-128x128.jpg"
-                                                        alt="User Avatar">
+                                                <div class="widget-user-header bg-info text-center">
+                                                    <h3 class="widget-user-username">{{ auth()->user()->name }}</h3>
+                                                    <h5 class="widget-user-desc">{{ auth()->user()->email }}</h5>
                                                 </div>
                                                 <div class="card-footer">
-                                                    <div class="row">
+                                                    <div class="row text-center">
                                                         <div class="col-sm-4 border-right">
                                                             <div class="description-block">
-                                                                <h5 class="description-header">3,200</h5>
-                                                                <span class="description-text">SALES</span>
+                                                                <h5 class="description-header">{{ count(auth()->user()->pedidos) }}</h5>
+                                                                <span class="description-text">TOTAL PEDIDOS</span>
                                                             </div>
 
                                                         </div>
 
                                                         <div class="col-sm-4 border-right">
                                                             <div class="description-block">
-                                                                <h5 class="description-header">13,000</h5>
-                                                                <span class="description-text">FOLLOWERS</span>
+                                                                <h5 class="description-header">{{ auth()->user()->totalProductosPorPedido() }}</h5>
+                                                                <span class="description-text">TOTAL PRODUCTOS</span>
                                                             </div>
 
                                                         </div>
 
                                                         <div class="col-sm-4">
                                                             <div class="description-block">
-                                                                <h5 class="description-header">35</h5>
-                                                                <span class="description-text">PRODUCTS</span>
+                                                                <h5 class="description-header">{{ auth()->user()->totalDineroGastadoCompras() }}€</h5>
+                                                                <span class="description-text">DINERO GASTADO</span>
                                                             </div>
 
                                                         </div>
@@ -123,18 +115,6 @@
                                                 </table>
                                             </div>
 
-                                        </div>
-                                        <div class="tab-pane fade" id="vert-tabs-messages" role="tabpanel"
-                                            aria-labelledby="vert-tabs-messages-tab">
-                                            Morbi turpis dolor, vulputate vitae felis non, tincidunt congue mauris.
-                                            Phasellus volutpat augue id mi placerat mollis. Vivamus faucibus eu massa eget
-                                            condimentum. Fusce nec hendrerit sem, ac tristique nulla. Integer vestibulum
-                                            orci odio. Cras nec augue ipsum. Suspendisse ut velit condimentum, mattis urna
-                                            a, malesuada nunc. Curabitur eleifend facilisis velit finibus tristique. Nam
-                                            vulputate, eros non luctus efficitur, ipsum odio volutpat massa, sit amet
-                                            sollicitudin est libero sed ipsum. Nulla lacinia, ex vitae gravida fermentum,
-                                            lectus ipsum gravida arcu, id fermentum metus arcu vel metus. Curabitur eget sem
-                                            eu risus tincidunt eleifend ac ornare magna.
                                         </div>
                                     </div>
                                 </div>
@@ -226,7 +206,7 @@
                             $('#filasDetallePedido').append(fila);
                         }
 
-                        $('#totalPedido').html(total + '€');
+                        $('#totalPedido').html(total.toFixed(2) + '€');
                     }
                 });
 

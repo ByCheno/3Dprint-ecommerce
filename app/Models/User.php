@@ -67,4 +67,29 @@ class User extends Authenticatable
     public function pedidos(){
         return $this->hasMany(Pedido::class);
     } 
+
+    public static function totalProductosPorPedido(){
+        $pedidos = Pedido::where('user_id', auth()->user()->id)->get();
+        $total_productos = 0;
+        foreach($pedidos as $pedido){
+            $totalDetallePedidos = DetallePedido::where('pedido_id', $pedido->id)->get();
+            foreach($totalDetallePedidos as $detalle){
+                $total_productos += $detalle->cantidad;
+            }
+        }
+        return $total_productos;
+    }
+
+    public static function totalDineroGastadoCompras(){
+        $pedidos = Pedido::where('user_id', auth()->user()->id)->get();
+        $total_gasto = 0;
+        foreach($pedidos as $pedido){
+            $totalDetallePedidos = DetallePedido::where('pedido_id', $pedido->id)->get();
+            foreach($totalDetallePedidos as $detalle){
+                $producto = Producto::find($detalle->producto_id);
+                $total_gasto += $detalle->cantidad * $producto->price;
+            }
+        }
+        return round($total_gasto);
+    }
 }

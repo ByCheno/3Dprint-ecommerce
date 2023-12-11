@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contacto;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use App\Models\Producto;
@@ -300,6 +301,52 @@ class FrontendController extends Controller
             'header' => $header,
             'header2' => $header2,
             'sub_header' => $sub_header,
+        ]);
+    }
+
+
+    public function enviar_contacto(Request $request)
+    {
+        $header = "Infinitecs";
+        $header2 = "";
+        $sub_header = "Formulario de contacto";
+
+        $nombre = $request->input('name');
+        $apellidos = $request->input('surname');
+        $email = $request->input('email');
+        $description = $request->input('description');
+
+        $contacto = new Contacto();
+        $contacto->name = $nombre;
+        $contacto->surname = $apellidos;
+        $contacto->email = $email;
+        $contacto->description = $description;
+        $contacto->save();
+       
+        return redirect()->route('frontend.contacto')->with([
+            'header' => $header,
+            'header2' => $header2,
+            'sub_header' => $sub_header,
+            'success' => 'Mensaje enviado correctamente. En breves te contactaremos',
+        ]);
+
+    }
+
+
+    public function miApi(){
+        $header = "Infinitecs";
+        $header2 = "";
+        $sub_header = "API";
+
+        $ultimos_productos = Producto::orderBy('created_at', 'desc')->limit(8)->get();
+        $productos_destacados = Producto::orderBy('price', 'desc')->limit(4)->get();
+
+        return view('frontend.api.api')->with([
+            'header' => $header,
+            'header2' => $header2,
+            'sub_header' => $sub_header,
+            'productos' => $ultimos_productos,
+            'productos_destacados' => $productos_destacados
         ]);
     }
 }
