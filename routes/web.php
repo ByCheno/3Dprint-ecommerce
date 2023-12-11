@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PedidoController;
+use App\Http\Controllers\ContactoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\CarritoController;
@@ -23,6 +24,9 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::post('/admin/categorias/crear', [CategoriaController::class, 'crear'])->name('admin.categorias.create');
     Route::get('/admin/categorias/editar/{id}', [CategoriaController::class, 'editar'])->name('admin.categorias.edit');
     Route::post('/admin/categorias/update/{id}', [CategoriaController::class, 'update'])->name('admin.categorias.update');
+
+    Route::get('/admin/contacto', [ContactoController::class, 'index'])->name('admin.contacto.index');
+    Route::get('/admin/contactos/eliminar/{id}', [ContactoController::class, 'destroy'])->name('admin.contacto.destroy');
 
     Route::get('/admin/productos', [ProductoController::class, 'index'])->name('admin.productos.index');
     Route::get('/admin/productos/eliminar/{id}', [ProductoController::class, 'destroy'])->name('admin.productos.destroy');

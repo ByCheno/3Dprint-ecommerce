@@ -291,6 +291,11 @@ return [
             'url'  => 'admin/usuarios',
             'icon' => 'fas fa-fw fa-users',
         ],
+        [
+            'text' => 'Mensajes',
+            'url'  => 'admin/contacto',
+            'icon' => 'fas fa-fw fa-envelope',
+        ],
     ],
 
     /*
