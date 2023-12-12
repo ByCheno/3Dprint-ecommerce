@@ -75,7 +75,7 @@
                                             <div class="card" style="border: 1px solid red !important;">
                                     @endif
                                     <img src="{{ asset('images/productos/' . $image->url) }}" class="card-img-top">
-                                    <div class="card-body">
+                                    <div class="card-body"> 
                                         <p class="card-text"></p>
 
                                         <a href="#" onclick="mostrarEliminar({{ $image->id }})"
