@@ -25,7 +25,6 @@ class ApiController extends Controller
             $producto_final['foto_portada'] = $producto->fotoPortada();
             array_push($productos_final, $producto_final);
         }
-       
 
         return response()->json($productos_final);
     }

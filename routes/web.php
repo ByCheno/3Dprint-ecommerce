@@ -18,6 +18,7 @@ Auth::routes();
 Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 
+    // RUTAS BACKEND
     Route::get('/admin/categorias', [CategoriaController::class, 'index'])->name('admin.categorias.index');
     Route::get('/admin/categorias/eliminar/{id}', [CategoriaController::class, 'destroy'])->name('admin.categorias.destroy');
     Route::get('/admin/categorias/ver/{id}', [CategoriaController::class, 'show'])->name('admin.categorias.show');
@@ -58,7 +59,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
 
 });
 
-/* RUTAS FRONTED */
+/* RUTAS FRONTEND */
 Route::get('/', [FrontendController::class, 'index'])->name('index');
 Route::get('frontend/productos/show/{id}', [FrontendController::class, 'show'])->name('frontend.productos.show');
 Route::get('frontend/productos/tienda', [FrontendController::class, 'tienda'])->name('frontend.productos.tienda');
@@ -74,7 +75,6 @@ Route::get('/frontend/aboutus', [FrontendController::class, 'aboutus'])->name('f
 Route::get('/frontend/contacto', [FrontendController::class, 'contacto'])->name('frontend.contacto');
 Route::post('/frontend/contacto/enviar', [FrontendController::class, 'enviar_contacto'])->name('frontend.contacto.enviar');
 
-/* MI PERFIL */
 Route::get('/frontend/miperfil', [MiPerfilController::class, 'index'])->name('frontend.miperfil.index');
 Route::get('/frontend/miperfil/detallespedido/{id}', [MiPerfilController::class, 'detallesPedido'])->name('frontend.miperfil.detallesPedido');
 
