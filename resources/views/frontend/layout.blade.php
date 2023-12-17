@@ -8,6 +8,7 @@
     <meta name="author" content="" />
     @yield('titulo')
     @include('frontend.comunes.css')
+    @vite('resources/js/app.js') 
 </head>
 
 <body>

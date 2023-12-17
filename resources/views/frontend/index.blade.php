@@ -7,6 +7,10 @@
 @section('contenido')
     @include('frontend.componentes.header')
 
+    <div id="app">
+        <last-products></last-products>
+     </div>
+
     @if(session('error'))
     <section class="py-5">
         <div class="container mt-1">
@@ -17,11 +21,12 @@
     </section>
     @endif
 
-    @include('frontend.componentes.ultimos_productos')
     @include('frontend.componentes.productos_destacados')
 @endsection
 
 @section('js')
+    <script src="{{ mix('js/app.js') }}"></script>
+
     <script type="text/javascript">
         $(document).ready(function() {
             fetch('http://127.0.0.1:8000/api/v1/productos')
@@ -29,7 +34,6 @@
                 .then(data => {
                     const container = document.getElementById('productos-container');
                     data.forEach(producto => {
-                        console.log(producto);
                         let imagen = "";
                         if(producto.foto_portada == null){
                             imagen = "/images/cover.png";
