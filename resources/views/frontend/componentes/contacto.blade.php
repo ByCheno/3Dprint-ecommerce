@@ -21,7 +21,7 @@
                         <div class="row align-items-center">
                             <div class="col-lg-7 mb-5 mb-lg-0">
                                 <h2 class="mb-5">Completa el formulario.</h2>
-                               
+
                                 @if(session('success'))
                                     <div class="row mt-3">
                                         <div class="col-lg-12">

@@ -9,7 +9,7 @@
 
     <div id="app">
         <last-products></last-products>
-     </div>
+    </div>
 
     @if(session('error'))
     <section class="py-5">
