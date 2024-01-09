@@ -7,9 +7,9 @@
 @stop
 
 @section('content')
-    <div class="row">
-        <div class="col-lg-3 col-6">
-
+    <div class="row justify-content-center">
+        {{-- PANEL DE CATEGORIAS --}}
+        <div class="col-lg-2 col-6">
             <div class="small-box bg-info">
                 <div class="inner">
                     <h3>{{ App\Models\Categoria::all()->count() }}</h3>
@@ -22,8 +22,8 @@
             </div>
         </div>
 
-        <div class="col-lg-3 col-6">
-
+        {{-- PANEL DE PRODUCTOS --}}
+        <div class="col-lg-2 col-6">
             <div class="small-box bg-success">
                 <div class="inner">
                     <h3>{{ App\Models\Producto::all()->count() }}</h3>
@@ -36,8 +36,8 @@
             </div>
         </div>
 
-        <div class="col-lg-3 col-6">
-
+        {{-- PANEL DE PEDIDOS --}}
+        <div class="col-lg-2 col-6">
             <div class="small-box bg-warning">
                 <div class="inner">
                     <h3>{{ App\Models\Pedido::all()->count() }}</h3>
@@ -50,8 +50,8 @@
             </div>
         </div>
 
-        <div class="col-lg-3 col-6">
-
+        {{-- PANEL DE USUARIOS --}}
+        <div class="col-lg-2 col-6">
             <div class="small-box bg-danger">
                 <div class="inner">
                     <h3>{{ App\Models\User::all()->count() }}</h3>
@@ -63,9 +63,23 @@
                 <a href="/admin/usuarios" class="small-box-footer">Ver más <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
+
+        <div class="col-lg-2 col-6">
+            <div class="small-box bg-secondary">
+                <div class="inner">
+                    <h3>{{ App\Models\Contacto::all()->count() }}</h3>
+                    <p>Mensajes</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-users"></i>
+                </div>
+                <a href="/admin/contacto" class="small-box-footer">Ver más <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
     </div>
 
-    <div class="row mt-4">
+
+    <div class="row mt-5">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header border-0">
@@ -86,7 +100,8 @@
                         </p>
                         <p class="d-flex flex-column text-right">
                             <span class="font-weight-bold">
-                                <i class="ion ion-android-arrow-up text-success"></i> {{ App\Models\Pedido::where('estado', 'pendiente')->count() }}
+                                <i class="ion ion-android-arrow-up text-success"></i>
+                                {{ App\Models\Pedido::where('estado', 'pendiente')->count() }}
                             </span>
                             <span class="text-muted text-uppercase">Pedidos pendientes</span>
                         </p>
@@ -98,7 +113,8 @@
                         </p>
                         <p class="d-flex flex-column text-right">
                             <span class="font-weight-bold">
-                                <i class="ion ion-android-arrow-up text-warning"></i> {{ App\Models\Pedido::where('estado', 'completado')->count() }}
+                                <i class="ion ion-android-arrow-up text-warning"></i>
+                                {{ App\Models\Pedido::where('estado', 'completado')->count() }}
                             </span>
                             <span class="text-muted text-uppercase">Pedidos completados</span>
                         </p>
